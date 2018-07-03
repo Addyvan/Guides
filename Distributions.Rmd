@@ -1,0 +1,173 @@
+---
+title: "Distributions"
+author: "Addison van den Hoeven"
+date: "July 3, 2018"
+output: 
+  prettydoc::html_pretty:
+  theme: cayman
+  highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+
+
+
+## The Normal Distribution
+
+Often referred to as the Gaussian distribution, the Normal Distribution is a very common continuous probability distribution. Normal Distributions are important in statistics and are often used in the natural and social sciences to represent real-valued random variables whose distributions are not known. The Normal Distribution is very useful because of the Central Limit Theorem. 
+
+#### Why is the Normal Distribution so commonly used?
+
+
+
+#### Central Limit Theorem
+
+The Central Limit Theorem states that the average of samples of observations of random variables independently drawn from the independent distributions converge in distribution to the normal. In other words, if you take a bunch of samples independent from each other, the probability distribution of the samples will be normal as you take more observations.
+
+In order to better illustrate this concept I will use an example. Lets imagine that we are rolling a fair six sided dice. The sample space is thus:
+
+$$ \Omega = \{1,2,3,4,5,6\}  $$
+where the probability of any individual outcome is:
+
+$$ P(X=1) = P(X=2) = P(X=3) = P(X=4) = P(X=5) = P(X=6) = \frac{1}{6}$$
+
+Now suppose we are interested in the sum of dice rolls. Our model now changes slightly as different outcomes must be weighted since rolling a 6 will impact the sum more than rolling a 1. The expected value of any one roll, $X_i$, is:
+
+$$E(X_i) = \mu_X = \sum_{i=1}^6 P(X=i) * i$$
+$$E(X_i) = \frac{1}{6} + \frac{2}{6} + \frac{3}{6} + \frac{4}{6} + \frac{5}{6} + \frac{6}{6} = \frac{21}{6} =  3.5$$
+
+The variance can also be found:
+
+$$ VAR(X_i) = \sigma^2_X = \frac{\sum (X_i - \mu_X)^2 }{6} = \frac{17.5}{6} = 2.916667$$
+
+Central Limit Theorem allows us to now estimate the distribution, assuming $n$ events in each sample, as follows:
+
+$$\bar{X}_i \sim N(\mu_X, \frac{\sigma^2_X}{n})$$
+Note that this only holds true provided the number of samples is large enough. Generally 30 or more; however, this varies by field of study. For example, in manufacturing/supply chain management, they often use as little as 10 samples to estimate quality.
+
+To see how CLT performs in practice I have performed the same trial using varying amounts of samples.
+
+```{r}
+# Initialize Variables ---------------------------
+
+n <- 30
+mu <- 3.5
+variance <- 2.916667
+std <- sqrt(variance)/sqrt(n)
+
+x <- seq(-4*std + mu, 4*std + mu, length=100) # for plotting normal dist 
+hx <- dnorm(x, mean=mu, sd=std) # for plotting normal dist
+
+```
+
+Taking 100 samples:
+
+```{r, echo=FALSE}
+
+all_samples <- c()
+for (k in 1:100) {
+  
+  one_sample <- c()
+  
+  for (i in 1:n) {
+    one_sample[i] <- sample(1:6, size = 1, replace = TRUE, prob = NULL)
+  }
+  all_samples[k] <- mean(one_sample)
+  
+}
+
+hist(all_samples,
+     lty = 2,
+     breaks = 25,
+     xlab = "Average Sum of Dice Rolls",
+     ylab = "Frequency / n",
+     main = "100 Samples",
+     xlim = c(30/n, 180/n),
+     freq = FALSE,
+     col = "skyblue")
+
+
+lines(x, 
+      hx,
+      type = "l",
+      lty = 2,
+      xlim = c(1,6),
+      ylim = c(0,1.5),
+      col="tomato")
+
+```
+
+Taking 1000 samples:
+
+```{r, echo=FALSE}
+all_samples <- c()
+for (k in 1:1000) {
+  
+  one_sample <- c()
+  
+  for (i in 1:n) {
+    one_sample[i] <- sample(1:6, size = 1, replace = TRUE, prob = NULL)
+  }
+  all_samples[k] <- mean(one_sample)
+  
+}
+
+hist(all_samples,
+     breaks = 25,
+     lty = 2,
+     xlab = "Average Sum of Dice Rolls",
+     ylab = "Frequency / n",
+     main = "1000 Samples",
+     xlim = c(30/n, 180/n),
+     freq = FALSE,
+     col = "skyblue")
+
+
+lines(x, 
+      hx,
+      type = "l",
+      lty = 2,
+      xlim = c(1,6),
+      ylim = c(0,1.5),
+      col="tomato")
+```
+
+Taking 10000 samples:
+
+```{r, echo=FALSE}
+all_samples <- c()
+for (k in 1:10000) {
+  
+  one_sample <- c()
+  
+  for (i in 1:n) {
+    one_sample[i] <- sample(1:6, size = 1, replace = TRUE, prob = NULL)
+  }
+  all_samples[k] <- mean(one_sample)
+  
+}
+
+hist(all_samples,
+     lty = 2,
+     breaks = 25,
+     xlab = "Average Sum of Dice Rolls",
+     ylab = "Frequency / n",
+     main = "10000 Samples",
+     xlim = c(30/n, 180/n),
+     freq = FALSE,
+     col = "skyblue")
+
+
+lines(x, 
+      hx,
+      type = "l",
+      lty = 2,
+      xlim = c(1,6),
+      ylim = c(0,1.5),
+      col="tomato")
+```
