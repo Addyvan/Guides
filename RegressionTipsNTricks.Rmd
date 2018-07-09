@@ -1,0 +1,24 @@
+---
+title: "Linear Regression Tips and Tricks"
+author: "Addison van den Hoeven"
+date: "July 3, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Title
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```

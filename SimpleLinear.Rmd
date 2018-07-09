@@ -12,13 +12,100 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Title
+## Overview
+
+Linear Regression is a very simple approach for performing supervised learning. It is a useful tool for predicting a quantitative response variable $Y$, also called the dependent variable, using input variables $X_1,...,X_n$, also called independent variables or regressors, using a simple linear model.
+
+Although it may seem overly simplistic, linear regression is extremely useful both conceptually and practically.
+
+* It is still a widely used statistical learning model
+* It servers as a great starting point for newer approaches: many fancy statistical learning approaches can be seen as generalizations or extensions of linear regression
+
+## Intuition
+
+Suppose that your role is to develope a marketing plan, on the basis of data, for next year that will result in high product sales.
+
+Questions we might ask would be:
+
+* Is there a relationship between advertising budget and sales?
+* How strong is the relationship?
+* Which media contribute to sales?
+* How can we estimate the the effect of each medium on sales?
+* How accurately can we predict future sales?
+* Is the relationship linear? 
+
+Linear Regression can be used to answer all these questions.
+
+## Math behind Simple Linear Regression
+
+Simple Linear (SL) Regression is a simple approach for predicting a quantitative response $Y$ on the basis of a single predictor variable $X$. It assumes there is approximately a linear relationship between $X$ and $Y$. 
+
+Mathematically, we can write this linear relationship as:
+
+$$Y \approx \beta_0 + \beta_1 X$$
+where $\approx$ denotes "approximately modeled as".
+
+In the above equation $\beta_0$ and $\beta_1$ are two unknown constants that denote the intercept and slope of the linear model. They are generally referred to as model coefficients or model parameters. Our goal is to find these values.
+
+For example, $X$ may represent visits to the TBS Open Data Portal and $Y$ may represent the number of data downloads from the portal:
+
+```{r, echo = FALSE}
+df <- read.csv("TBSOpenDataVisits.csv", header = TRUE)
 
 
+plot(x = df$visits, 
+     y = df$downloads,
+     xlab = "Visits",
+     ylab = "Data Downloads",
+     main = "TBS Open Data Portal Downloads ~ Visits",
+     col="blue")
 
-```{r}
+linear_model <- lm(downloads ~ visits, data=df)
+
+abline(linear_model, col="tomato")
 
 ```
+
+It is important to remark that:
+
+* In most scientific / engineering phenomena, the relationship between $X$ and $Y$ is not necessarily linear
+* It is also not necessarily deterministic in the sense that a given value $X$ does not always give the same value for $Y$
+
+As a result, these problems are probabilitisc in nature since the relationship is not exact. The concept of regression analysis deals with finding the best relationship between $Y$ and $X$.
+
+Because of this we assume a model where we include an error term $\epsilon$:
+
+$$Y = \beta_0 + \beta_1 X + \epsilon$$ where $\epsilon$ is the error term
+
+Given some estimates $\hat{\beta_0}$ and $\hat{\beta_1}$ for the model coefficients, we predict downloads using
+
+$$ \hat{y} = \hat{\beta_0} + \hat{\beta_1} x $$ where $\hat{y}$ indicates a prediction of $Y$ on the basis of $X=x$.
+
+* The hat hat symbol denotes an estimated value.
+
+In practice, $\beta_0$ and $\beta_1$ are unknown. We must use the data to estimate the coefficients/parameters. Now we get into the nitty gritty of regression and actually do a little math to see how we can turn raw data into an approximate linear model.
+
+
+Let $(x_1, y_1), (x_2, y_2),...,(x_n, y_n)$ represent $n$ observation pairs, each of which consists of a measurement of $X$ and $Y$. These value pairs are called the training data. 
+
+Let $\hat{y_i} = \hat{\beta_0} + \hat{\beta_1} x_i$ be the prediction for $Y$ based on the $i$th value of $X$.
+
+Then $e_i = y_i - \hat{y_i}$ represents the $i$th residual.
+
+We define the Sum of Squared Errors (SSE) also called the Residual Sum of Squares (RSS) as 
+
+$$E(\beta_0, \beta_1) = RSS = e^2_1 + e^2_2 + ... + e^2_n = \sum^n_{i=1} (y_i - \hat{\beta_0} - \hat{\beta_1} * x_i)^2$$
+
+
+## Examples
+
+#### No library done out in R
+
+#### With R libraries
+
+#### With python libraries
+
+
 
 
 
