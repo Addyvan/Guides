@@ -192,7 +192,78 @@ Thus, the estimates of $\beta_0$ and $\beta_1$ may be viewed as values assumed b
 Since the values of $X$ remain fixed, the values of $\beta_0$ and $\beta_1$ depend on the variations in the values of $Y$ or, more precisely, on the values of the random variable $Y_1, Y_2, ...,Y_n$. The distributional assumptions imply that $Y_i, i=1,2,...,n$ are also independently distributed, with mean $E(Y_i) = E(Y|x_i) = \beta_0 + \beta_1 x_i$ and equal variances $\sigma^2$; that is:
 
 $$ \sigma_{Y|x_i}^2 = \sigma^2 \quad \text{  for  } \quad i=1,2,...,n$$
-SLIDE 23
+#### The least squares estimators for $\beta_0$ and $\beta_1$
+
+$$
+\begin{aligned}
+B_1 &= \frac{\sum^n_{i=1} (x_i - \bar{x})(Y_i - \bar{Y})}{\sum^n_{i=1} (x_i - \bar{x})^2} = \frac{\sum^n_{i=1} (x_i - \bar{x})Y_i}{\sum^n_{i=1} (x_i - \bar{x})^2} \\
+&= \sum^n_{i=1} c_i Y_i
+\end{aligned}
+$$
+where
+$$
+c_i = \frac{x_i - \bar{x}}{\sum^n_{i=1} (x_i - \bar{x})^2}, \quad i=1,...,n
+$$
+
+It follows that $B_1$ is a normal distribution with mean
+
+$$
+\mu_{B_1} = \frac{\sum^n_{i=1} (x_i - \bar{x})(\beta_0 + \beta_1 x_i)}{\sum^n_{i=1} (x_i - \bar{x})^2} = \beta_1
+$$
+hence, it is an unbiased estimator of $\beta_1$. Its variance is
+
+$$
+\sigma^2_{B_1} = \frac{\sum^n_{i=1} (x_i - \bar{x})^2 \sigma^2_{Y_i}}{\Big [  \sum^n_{i=1} (x_i - \bar{x})^2  \Big ]^2 } = \frac{\sigma^2}{\sum^n_{i=1} (x_i - \bar{x})^2}
+$$
+
+The least squares estimator for $\beta_0$ is given by
+
+$$B_0 = \bar{Y} - \bar{x} B_1$$
+
+It follows that $B_0$ is also normally distributed with mean
+
+$$ \mu_{B_0} = E(\bar{Y}) - \bar{x} E(B_1) = \beta_0 $$
+hence, it is an unbiased estimator of $\beta_0$.
+
+Its variance is 
+
+$$ \sigma^2_{B_0} = \frac{\sum^n_{i=1} x_i^2}{n \sum^n_{i=1} (x_i -\bar{x})^2} \sigma^2 $$
+
+To draw inferences on $\beta_0$ and $\beta_1$, it becomes necessary to arrive at an estimate of the parameter $\sigma^2$ appearing in the two preceding variance formulas for $B_0$ and $B_1$.
+
+The parameter $\sigma^2$, the model error variance, reflects random variation or experimental error variation around the regression line. We define:
+
+$$
+\begin{aligned}
+S_{xx} &= \sum^n_{i=1} (x_i - \bar{x})^2 \\
+S_{yy} &= \sum^n_{i=1} (y_i - \bar{y})^2\\
+S_{xy} &= \sum^n_{i=1} (x_i - \bar{x})(y_i - \bar{y})
+\end{aligned}
+$$
+
+Now we may write
+
+$$
+\begin{aligned}
+RSS &= S_{yy} - 2 \hat{\beta_1} S_{xx} + \hat{\beta_1}^2 S_{xx}\\
+&= S_{yy} - \hat{\beta_1} S_{xy} \quad (\text{since} \quad \hat{\beta_1} = S_{xy}/S_{xx})
+\end{aligned}
+$$
+
+It follows that
+
+$$
+s^2 = \frac{RSS}{n-2} = \sum^n_{i=1} \frac{(y_i - \hat{y_i})^2}{n-2} = \frac{S_{yy} - \hat{\beta_1} S_{xy}}{n-2}
+$$
+is an unbiased estimator of $\sigma^2$.
+
+SLIDE 27
+
+## Statistics of Linear Regression using Least Squares
+
+## Quality of Fit
+
+## Prediction
 
 ## Examples
 
