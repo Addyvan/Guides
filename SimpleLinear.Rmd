@@ -12,16 +12,16 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Overview
+## Overview of Linear Regression
 
-Linear Regression is a very simple approach for performing supervised learning. It is a useful tool for predicting a quantitative response variable $Y$, also called the dependent variable, using input variables $X_1,...,X_n$, also called independent variables or regressors, using a simple linear model.
+Linear Regression is a very simple approach for performing supervised learning. It is a useful tool for predicting a quantitative response variable $Y$ (also called the dependent variable) using input variables $X_1,...,X_n$ (also called independent variables or regressors) using a simple linear model.
 
 Although it may seem overly simplistic, linear regression is extremely useful both conceptually and practically.
 
 * It is still a widely used statistical learning model
 * It servers as a great starting point for newer approaches: many fancy statistical learning approaches can be seen as generalizations or extensions of linear regression
 
-## Intuition
+## Intuition behind using models
 
 Suppose that your role is to develope a marketing plan, on the basis of data, for next year that will result in high product sales.
 
@@ -36,7 +36,7 @@ Questions we might ask would be:
 
 Linear Regression can be used to answer all these questions.
 
-## Math behind Simple Linear Regression
+## Simple Linear Regression
 
 Simple Linear (SL) Regression is a simple approach for predicting a quantitative response $Y$ on the basis of a single predictor variable $X$. It assumes there is approximately a linear relationship between $X$ and $Y$. 
 
@@ -47,7 +47,7 @@ where $\approx$ denotes "approximately modeled as".
 
 In the above equation $\beta_0$ and $\beta_1$ are two unknown constants that denote the intercept and slope of the linear model. They are generally referred to as model coefficients or model parameters. Our goal is to find these values.
 
-For example, $X$ may represent visits to the TBS Open Data Portal and $Y$ may represent the number of data downloads from the portal:
+For example, $X$ may represent visits to the TBS Open Data Portal and $Y$ may represent the number of data downloads from the portal. Below is an example of linear regression used on real data disclosed by TBS on the open data portal:
 
 ```{r, echo = FALSE}
 df <- read.csv("TBSOpenDataVisits.csv", header = TRUE)
@@ -81,10 +81,19 @@ Given some estimates $\hat{\beta_0}$ and $\hat{\beta_1}$ for the model coefficie
 
 $$ \hat{y} = \hat{\beta_0} + \hat{\beta_1} x $$ where $\hat{y}$ indicates a prediction of $Y$ on the basis of $X=x$.
 
-* The hat hat symbol denotes an estimated value.
+* The hat symbol denotes an estimated value.
 
 In practice, $\beta_0$ and $\beta_1$ are unknown. We must use the data to estimate the coefficients/parameters. Now we get into the nitty gritty of regression and actually do a little math to see how we can turn raw data into an approximate linear model.
 
+## Math behind Simple Linear Regression
+
+If you have never derived any statistical or learning model before, simple linear regression is a great place to start. The principles and intuition behind SLR will be invaluable when working towards more complex problems. 
+
+Before diving in, just know that it is assumed that you have some familiarity with summation notation, basic calculus, and some sense of statistics. If this is not the case I would still recommend diving in as there is a good chance things will clear up as you read forward and if that is not the case your eyes will have picked up a few things that will trigger a response when you do go to do a little catchup in these domains. Additionaly, moving forward, an understanding of linear algebra and matrix calculus will be very helpful. When working in this space it never hurts to understand more of the math then needed.
+
+Speaking from experience, it may also be helpful to grab a paper and pen/pencil and write down the equations yourself. Solving things on your own is a surefire way to keep things in memory and it may also lead to the creation of your own personalized notes on the subject. Lastly, there is no need to memorize every piece of a derivation. It is there to help you understand and often you do not need to hold the derivatives in memory to fully understand a model's use case and potential.
+
+#### Derivation of Simple Linear Regression: least squares approach
 
 Let $(x_1, y_1), (x_2, y_2),...,(x_n, y_n)$ represent $n$ observation pairs, each of which consists of a measurement of $X$ and $Y$. These value pairs are called the training data. 
 
@@ -94,13 +103,119 @@ Then $e_i = y_i - \hat{y_i}$ represents the $i$th residual.
 
 We define the Sum of Squared Errors (SSE) also called the Residual Sum of Squares (RSS) as 
 
-$$E(\beta_0, \beta_1) = RSS = e^2_1 + e^2_2 + ... + e^2_n = \sum^n_{i=1} (y_i - \hat{\beta_0} - \hat{\beta_1} * x_i)^2$$
+$$E(\beta_0, \beta_1) = RSS = e^2_1 + e^2_2 + ... + e^2_n = \sum^n_{i=1} (y_i - \hat{\beta_0} - \hat{\beta_1} x_i)^2$$
+Our goal is to minimize the RSS, effectively minimizing the amount our model is incorrect. To do this we calculate the partial derivatives of $\beta_0$ and $\beta_1$ and set them to zero.
 
+First, the partial derivative w.r.t. (with respect to) $\beta_0$:
+
+$$ \frac{\partial E}{\partial \beta_0}  = \frac{\partial}{\partial \beta_0} \Big[ \sum^n_{i=1} (\beta_0 + \beta_1 x_i - y_i)^2 \Big] = 0$$
+Utilizing [chain rule](https://www.math.ucdavis.edu/~kouba/CalcOneDIRECTORY/chainruledirectory/ChainRule.html): 
+$$ \Leftrightarrow 2 \sum^n_{i=1}(\beta_0 + \beta_1 x_i - y_i) \frac{\partial}{\partial \beta_0} [\beta_0 + \beta_0 + \beta_1 x_i - y_i] = 0$$
+$$ \Leftrightarrow \sum^n_{i=1} (\beta_0 + \beta_1 x_i - y_i) (1 + 0 - 0) = \sum^n_{i=1} (\beta_0 + \beta_1 x_i - y_i) = 0$$
+Utilizing [Summation Properties](http://tutorial.math.lamar.edu/Classes/CalcI/SummationNotation.aspx):
+$$ \Leftrightarrow n \beta_0 + \beta_1 \sum^n_{i=1} x_i - \sum^n_{i=1} y_i = 0$$
+$$ \Leftrightarrow n \beta_0 + \beta_1 \sum^n_{i=1} x_i = \sum^n_{i=1} y_i$$
+
+Then, the partial derivative w.r.t $\beta_1$:
+
+$$ 
+\begin{aligned} 
+\frac{\partial E}{\partial \beta_1} &= \frac{\partial}{\partial \beta_1} \Big[ \sum^n_{i=1} (\beta_0 + \beta_1 x_i - y_i)^2 \Big] = 0 \\
+&\Leftrightarrow 2 \sum^n_{i=1}(\beta_0 + \beta_1 x_i - y_i) \frac{\partial}{\partial \beta_1} [\beta_0 + \beta_0 + \beta_1 x_i - y_i] = 0 \\
+&\Leftrightarrow \sum^n_{i=1}(\beta_0 + \beta_1 x_i - y_i)x_i = 0 \\
+&\Leftrightarrow \beta_0 \sum^n_{i=1} x_i + \beta_1 \sum^n_{i=1} x_i^2 - \sum^n_{i=1} x_i y_i = 0 \\ &\Leftrightarrow \beta_0 \sum^n_{i=1} x_i + \beta_1 \sum^n_{i=1} x_i^2 = \sum^n_{i=1} x_i y_i \end{aligned}
+ $$
+
+Now that we have found both partial derivatives, we can use them to solve for $\beta_0$ and $\beta_1$:
+
+$$
+\begin{aligned}
+\frac{\partial E}{\partial \beta_0} &= n \beta_0 + \beta_1 \sum^n_{i=1} x_i - \sum^n_{i=1} y_i = 0\\
+\frac{\partial E}{\partial \beta_1} &= \beta_0 \sum^n_{i=1} x_i + \beta_1 \sum^n_{i=1} x_i^2 - \sum^n_{i=1} x_i y_i = 0
+\end{aligned}
+$$
+$$ n \beta_0 + \beta_1 \sum^n_{i=1} x_i - \sum^n_{i=1} y_i = \beta_0 \sum^n_{i=1} x_i + \beta_1 \sum^n_{i=1} x_i^2 - \sum^n_{i=1} x_i y_i$$
+The slope term is:
+
+$$
+\begin{aligned}
+\hat{\beta_1} &= \frac{n\sum^n_{i=1} x_i y_i - (\sum^n_{i=1} x_i)(\sum^n_{i=1} y_i)}{n \sum^n_{i=1} x_i^2 - (\sum^n_{i=1} x_i)^2} \\
+&= \frac{\sum^n_{i=1} (x_i - \bar{x})(y_i - \bar{y})}{\sum^n_{i=1} (x_i - \bar{x})^2} \\
+&= \frac{Cov(x,y)}{Var(x)}
+\end{aligned}
+$$
+Where $\bar{y} = \frac{1}{n}\sum^n_{i=1} y_i$ and $\bar{x} = \frac{1}{n}\sum^n_{i=1} x_i$ are the sample means.
+
+The intercept term is:
+
+$$
+\begin{aligned}
+\hat{\beta_0} &= \frac{\sum^n_{i=1} y_i - \hat{\beta_1} \sum^n_{i=1} x_i}{n}
+&= \bar{y} - \hat{\beta_1} \bar{x}
+\end{aligned}
+$$
+
+## Least Squares
+
+The above method of performing linear regression is referred to as Ordinary Least Squares Estimation (OLSE).
+
+#### Why least squares?
+
+The least squares method is designed to minimize the sum of the squares of the residuals and to provide a fitted line that results in a closeness between the line and the plotted points.
+
+There are many ways of measuring closeness. For example, one may wish to determine $\hat{\beta_0}$ and $\hat{\beta_1}$ using another formula of the combined residuals such as:
+
+$$\sum^n_{i=1} |y_i - \hat{y_i}|$$ or $$\sum^n_{i=1} |y_i - \hat{y_i}|^{\frac{3}{2}}$$
+
+However, the least squares method has the advantage to produce a differentiable formula and fit with the known formula of the variance of a random variable.
+
+#### Properties of least squares estimators
+
+* In the equation $Y= \beta_0 + \beta_1 X + \epsilon$, the error term $\epsilon$ is assumed to be a normal random variable with $E(\epsilon) = 0$ and $Var(\epsilon) = \sigma^2$.
+* Thus, $Y$ is also a normal random variable. In general $X$ is not random and can be measured with negligible error.
+* The fact that $E(\epsilon) = 0$ implies that at a specific $X$, the $Y$ values are distributed around the true or population regression line $Y= \beta_0 + \beta_1 X$
+
+![](SimpleLinearFig1.png)
+
+* $Y$ is a random variable for each fixed value of $X$. Observe that:
+
+$$E(Y|X) = \beta_0 + \beta_1 X$$
+
+* The true regression line goes through the means of the response, and the actual observations are on the distribution around the means.
+
+Suppose we make the assumption that $\epsilon_1,...,\epsilon_n$ are independent from run to run in the experiment. This provides a foundation for finding means and variances for the estimators $\beta_0$ and $\beta_1$.
+
+We recall that $\hat{\beta_0}$ and $\hat{\beta_1}$ are only estimates of true parameters $\beta_0$ and $\beta_1$ based on a given sample of $n$ observations. If the experiment is repeated over and over again, each time using the same fixed values of $x$, the resulting estimates of $\beta_0$ and $\beta_1$ will most likely differ from experiment to experiment.
+
+Thus, the estimates of $\beta_0$ and $\beta_1$ may be viewed as values assumed by the random variables $B_0$ and $B_1$ which can be considered as estimators for $\beta_0$ and $\beta_1$. Thus, $\hat{\beta_0}$ and $\hat{\beta_1}$ are specific realizations of the estimators. 
+
+Since the values of $X$ remain fixed, the values of $\beta_0$ and $\beta_1$ depend on the variations in the values of $Y$ or, more precisely, on the values of the random variable $Y_1, Y_2, ...,Y_n$. The distributional assumptions imply that $Y_i, i=1,2,...,n$ are also independently distributed, with mean $E(Y_i) = E(Y|x_i) = \beta_0 + \beta_1 x_i$ and equal variances $\sigma^2$; that is:
+
+$$ \sigma_{Y|x_i}^2 = \sigma^2 \quad \text{  for  } \quad i=1,2,...,n$$
+SLIDE 23
 
 ## Examples
 
 #### No library done out in R
 
+```{r}
+df <- read.csv("TBSOpenDataVisits.csv", header = TRUE)
+
+y_i <- df$downloads
+x_i <- df$visits
+
+plot(x = x_i, 
+     y = y_i,
+     main = "TBS Download Data",
+     col="blue")
+```
+```{r}
+# find beta0
+```
+
+```{r}
+# find beta1
+```
 #### With R libraries
 
 #### With python libraries
