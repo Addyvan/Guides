@@ -199,13 +199,59 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>We recall that <span class="math inline">\(\hat{\beta_0}\)</span> and <span class="math inline">\(\hat{\beta_1}\)</span> are only estimates of true parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> based on a given sample of <span class="math inline">\(n\)</span> observations. If the experiment is repeated over and over again, each time using the same fixed values of <span class="math inline">\(x\)</span>, the resulting estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> will most likely differ from experiment to experiment.</p>
 <p>Thus, the estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> may be viewed as values assumed by the random variables <span class="math inline">\(B_0\)</span> and <span class="math inline">\(B_1\)</span> which can be considered as estimators for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>. Thus, <span class="math inline">\(\hat{\beta_0}\)</span> and <span class="math inline">\(\hat{\beta_1}\)</span> are specific realizations of the estimators.</p>
 <p>Since the values of <span class="math inline">\(X\)</span> remain fixed, the values of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> depend on the variations in the values of <span class="math inline">\(Y\)</span> or, more precisely, on the values of the random variable <span class="math inline">\(Y_1, Y_2, ...,Y_n\)</span>. The distributional assumptions imply that <span class="math inline">\(Y_i, i=1,2,...,n\)</span> are also independently distributed, with mean <span class="math inline">\(E(Y_i) = E(Y|x_i) = \beta_0 + \beta_1 x_i\)</span> and equal variances <span class="math inline">\(\sigma^2\)</span>; that is:</p>
-<p><span class="math display">\[ \sigma_{Y|x_i}^2 = \sigma^2 \quad \text{  for  } \quad i=1,2,...,n\]</span> The least squares estimators for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are:</p>
+<p><span class="math display">\[ \sigma_{Y|x_i}^2 = \sigma^2 \quad \text{  for  } \quad i=1,2,...,n\]</span> #### The least squares estimators for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span></p>
 <p><span class="math display">\[
 \begin{aligned}
-B_1 &amp;= \frac{}{} = \frac{}{} 
+B_1 &amp;= \frac{\sum^n_{i=1} (x_i - \bar{x})(Y_i - \bar{Y})}{\sum^n_{i=1} (x_i - \bar{x})^2} = \frac{\sum^n_{i=1} (x_i - \bar{x})Y_i}{\sum^n_{i=1} (x_i - \bar{x})^2} \\
+&amp;= \sum^n_{i=1} c_i Y_i
+\end{aligned}
+\]</span> where <span class="math display">\[
+c_i = \frac{x_i - \bar{x}}{\sum^n_{i=1} (x_i - \bar{x})^2}, \quad i=1,...,n
+\]</span></p>
+<p>It follows that <span class="math inline">\(B_1\)</span> is a normal distribution with mean</p>
+<p><span class="math display">\[
+\mu_{B_1} = \frac{\sum^n_{i=1} (x_i - \bar{x})(\beta_0 + \beta_1 x_i)}{\sum^n_{i=1} (x_i - \bar{x})^2} = \beta_1
+\]</span> hence, it is an unbiased estimator of <span class="math inline">\(\beta_1\)</span>. Its variance is</p>
+<p><span class="math display">\[
+\sigma^2_{B_1} = \frac{\sum^n_{i=1} (x_i - \bar{x})^2 \sigma^2_{Y_i}}{\Big [  \sum^n_{i=1} (x_i - \bar{x})^2  \Big ]^2 } = \frac{\sigma^2}{\sum^n_{i=1} (x_i - \bar{x})^2}
+\]</span></p>
+<p>The least squares estimator for <span class="math inline">\(\beta_0\)</span> is given by</p>
+<p><span class="math display">\[B_0 = \bar{Y} - \bar{x} B_1\]</span></p>
+<p>It follows that <span class="math inline">\(B_0\)</span> is also normally distributed with mean</p>
+<p><span class="math display">\[ \mu_{B_0} = E(\bar{Y}) - \bar{x} E(B_1) = \beta_0 \]</span> hence, it is an unbiased estimator of <span class="math inline">\(\beta_0\)</span>.</p>
+<p>Its variance is</p>
+<p><span class="math display">\[ \sigma^2_{B_0} = \frac{\sum^n_{i=1} x_i^2}{n \sum^n_{i=1} (x_i -\bar{x})^2} \sigma^2 \]</span></p>
+<p>To draw inferences on <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, it becomes necessary to arrive at an estimate of the parameter <span class="math inline">\(\sigma^2\)</span> appearing in the two preceding variance formulas for <span class="math inline">\(B_0\)</span> and <span class="math inline">\(B_1\)</span>.</p>
+<p>The parameter <span class="math inline">\(\sigma^2\)</span>, the model error variance, reflects random variation or experimental error variation around the regression line. We define:</p>
+<p><span class="math display">\[
+\begin{aligned}
+S_{xx} &amp;= \sum^n_{i=1} (x_i - \bar{x})^2 \\
+S_{yy} &amp;= \sum^n_{i=1} (y_i - \bar{y})^2\\
+S_{xy} &amp;= \sum^n_{i=1} (x_i - \bar{x})(y_i - \bar{y})
 \end{aligned}
 \]</span></p>
+<p>Now we may write</p>
+<p><span class="math display">\[
+\begin{aligned}
+RSS &amp;= S_{yy} - 2 \hat{\beta_1} S_{xx} + \hat{\beta_1}^2 S_{xx}\\
+&amp;= S_{yy} - \hat{\beta_1} S_{xy} \quad (\text{since} \quad \hat{\beta_1} = S_{xy}/S_{xx})
+\end{aligned}
+\]</span></p>
+<p>It follows that</p>
+<p><span class="math display">\[
+s^2 = \frac{RSS}{n-2} = \sum^n_{i=1} \frac{(y_i - \hat{y_i})^2}{n-2} = \frac{S_{yy} - \hat{\beta_1} S_{xy}}{n-2}
+\]</span> is an unbiased estimator of <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>SLIDE 27</p>
 </div>
+</div>
+<div id="statistics-of-linear-regression-using-least-squares" class="section level2">
+<h2>Statistics of Linear Regression using Least Squares</h2>
+</div>
+<div id="quality-of-fit" class="section level2">
+<h2>Quality of Fit</h2>
+</div>
+<div id="prediction" class="section level2">
+<h2>Prediction</h2>
 </div>
 <div id="examples" class="section level2">
 <h2>Examples</h2>

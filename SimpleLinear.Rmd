@@ -257,13 +257,106 @@ s^2 = \frac{RSS}{n-2} = \sum^n_{i=1} \frac{(y_i - \hat{y_i})^2}{n-2} = \frac{S_{
 $$
 is an unbiased estimator of $\sigma^2$.
 
-SLIDE 27
+The parameter $\sigma^2$ measures the squared deviations between $Y$ values and their mean given by $E(Y/x)$, i.e., squared deviations between $Y$ and $\beta_0 + \beta_1 x$ which is estimated by $\hat{y} = \hat{\beta_0} + \hat{\beta_1} x$.
 
-## Statistics of Linear Regression using Least Squares
+Thus it would make sense that $\sigma^2$ is best depicted as a squared deviation of the typical observation $y_i$ from the estimated mean $\hat{y_i}$. 
 
-## Quality of Fit
+The quantity $s^2$ is called a mean-squared error (MSE).
 
-## Prediction
+## Inferences about the Regression Coefficients
+
+### Statistics of Linear Regression using Least Squares
+
+Under the normality assumption, we can prove that the random variable 
+
+$$\frac{(n-2)S^2}{\sigma^2}$$
+where
+$$S^2 = \frac{RSS}{n-2}$$
+is a chi-squared variable with $n-2$ degrees of freedom and it is independent of the random variable $B_1$.
+
+It follows that the statistic 
+
+$$T = \frac{(B_1 - \beta_1)/(\sigma / \sqrt{S_{xx}})}{S/ \sigma} = \frac{B_1 - \beta_1}{S / \sqrt{S_{xx}}}$$
+has a $t$-distribution with $n-2$ degrees of freedom.
+
+The statistic $T$ can be used to construct a $100(1 - \alpha) \%$ confidence interval for the coefficient $\beta_1$.
+
+A $100(1- \alpha)\%$ confidence interval for the parameter $\beta_1$ in the regression line
+
+$$E(Y/x) = \beta_0 + \beta_1 x$$
+is given by
+$$\hat{\beta_1} - t_{\alpha / 2} \frac{s}{\sqrt{S_{xx}}} < \beta_1 < \hat{\beta_1} + t_{\alpha / 2} \frac{s}{\sqrt{S_{xx}}}$$
+where $t_{\alpha / 2}$ is a value of the $t$-distribution with $v=n-2$ degrees of freedom leaving an area of $\alpha / 2$ to the right.
+
+Standard errors can also be used to perform hypothesis tests on the coefficients. The most common hypothesis test involves testing the null hypothesis of:
+$$H_0: \text{There is no relationship between X and Y}$$
+or
+$$H_1: \text{There is some relationship between X and Y}$$
+
+Mathematically this corresponds to testing:
+$$H_0: \beta_1 = 0$$
+versus
+$$H_1: \beta_1 \neq 0$$
+since if $\beta_1 = 0$ then the model reduces to $Y= \beta_0 + \epsilon$ and $X$ is not associated with $Y$.
+
+To test the null hypothesis, we compute a $t$-statistic, given by
+$$t=\frac{\hat{\beta_1} - 0}{SE(\hat{\beta_1})} = \frac{\hat{\beta_1} - 0}{s/\sqrt{S_{xx}}}$$
+This has a distribution with $n-2$ degrees of freedom. Using software it is easy to compute the probability of observing any value equal to $t$ or larger. This value is called the $p$ value. Roughly speaking we can interpret the p value as follows:
+
+* Small $p$-value $\Bigrightarrow$ it is unlikely to observe such a substancial association betweeb the predictor and the response due to chance, in the absence of any real association between the predictor and the response. 
+
+Confidence intervals and hypothesis testing on the coefficient $\beta_0$ may be established from the fact that $B_0$ is also normally distributed.
+
+It is not difficult to show that
+$$T= \frac{B_0 - \beta_0}{S \sqrt{\sum^n_{i=1} x_i^2 /(nS_{xx})}}$$
+has a $t$-distribution with $n-2$ degrees of freedom.
+
+We can now construct a $100(1-\alpha)\%$ confidence interval for the coefficient $\beta_0$.
+
+### Quality of Fit
+
+To assess the quality of fit, i.e., how well the simple linear regression model fits the data, we use the Coefficient of Determination, also known as $R$-squared ($R^2$). 
+
+We can defined the coefficient of determination as the proportion of the variation in the target variable $y$ explained by the linear regression. It is interpreted as the proportion of the variance in the dependent variable that is predictable from the independent variable. 
+
+Lets define the following quantities:
+
+* Total Sum of Squares: $TSS=\sum^n_{i=1} (y_i - \bar{y})^2$
+* Explained Sum of Squares: $ESS = \sum^n_{i=1} (\hat{y_i} - \bar{y})^2$
+
+So we see that $TSS$ is essentially a measure of the total variation in $y$ explained by both the regression model and the residual $\epsilon$. Note that $\bar{\hat{y}} = \bar{y}$:
+
+$$
+\begin{aligned}
+\bar{\hat{y}} &= \frac{1}{n} \sum^n_{i=1} \hat{y_i} = \frac{1}{n} \sum^n_{i=1} \hat{\beta_0} + \hat{\beta_1} x_i\\
+&= \hat{\beta_0} + \hat{\beta_1}\bar{x} = \bar{y}- \hat{\beta_1} \bar{x} + \hat{\beta_1} \bar{x}\\
+&= \bar{y}
+\end{aligned}
+$$
+It follows that
+$$ESS = \sum^n_{i=1} (\hat{y_i} - \bar{y})^2 = \sum^n_{i=1} (\hat{y_i} - \bar{\hat{y}})^2$$
+is the variation in the predicted data. 
+
+In other words, it measures the variation explained by the fitted model.
+
+Now, we recall that 
+$$RSS = \sum^n_{i=1} (y_i - \hat{y_i})^2$$
+which is the variation due to error, and usually called the unexplained variation. 
+
+The following equality, stating that the total sum of squares equals the residual sum of squares plus the explained sum of squares, is generally true in simple linear regression:
+
+$$
+\begin{aligned}
+\sum^n_{i=1} (y_i - \bar{y})^2 &= \sum^n_{i=1} (y_i - \hat{y_i})^2 + \sum^n_{i=1} (\hat{y_i} - \bar{y})^2 \\
+TSS &= RSS + ESS
+\end{aligned}
+$$
+
+The coefficient of determination $R^2$ is defined as 
+$$R^2 = \frac{ESS}{TSS} = 1 - \frac{RSS}{TSS}$$
+
+SLIDE 38
+### Prediction
 
 ## Examples
 
