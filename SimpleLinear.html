@@ -82,7 +82,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Although it may seem overly simplistic, linear regression is extremely useful both conceptually and practically.</p>
 <ul>
 <li>It is still a widely used statistical learning model</li>
-<li>It servers as a great starting point for newer approaches: many fancy statistical learning approaches can be seen as generalizations or extensions of linear regression</li>
+<li>It serves as a great starting point for newer approaches: many fancy statistical learning approaches can be seen as generalizations or extensions of linear regression</li>
 </ul>
 </div>
 <div id="intuition-behind-using-models" class="section level2">
@@ -113,7 +113,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>It is also not necessarily deterministic in the sense that a given value <span class="math inline">\(X\)</span> does not always give the same value for <span class="math inline">\(Y\)</span></li>
 </ul>
 <p>As a result, these problems are probabilitisc in nature since the relationship is not exact. The concept of regression analysis deals with finding the best relationship between <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span>.</p>
-<p>Because of this we assume a model where we include an error term <span class="math inline">\(\epsilon\)</span>:</p>
+<p>Because of this we assume a model where we include an error term:</p>
 <p><span class="math display">\[Y = \beta_0 + \beta_1 X + \epsilon\]</span> where <span class="math inline">\(\epsilon\)</span> is the error term</p>
 <p>Given some estimates <span class="math inline">\(\hat{\beta_0}\)</span> and <span class="math inline">\(\hat{\beta_1}\)</span> for the model coefficients, we predict downloads using</p>
 <p><span class="math display">\[ \hat{y} = \hat{\beta_0} + \hat{\beta_1} x \]</span> where <span class="math inline">\(\hat{y}\)</span> indicates a prediction of <span class="math inline">\(Y\)</span> on the basis of <span class="math inline">\(X=x\)</span>.</p>
@@ -126,17 +126,22 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>Math behind Simple Linear Regression</h2>
 <p>If you have never derived any statistical or learning model before, simple linear regression is a great place to start. The principles and intuition behind SLR will be invaluable when working towards more complex problems.</p>
 <p>Before diving in, just know that it is assumed that you have some familiarity with summation notation, basic calculus, and some sense of statistics. If this is not the case I would still recommend diving in as there is a good chance things will clear up as you read forward and if that is not the case your eyes will have picked up a few things that will trigger a response when you do go to do a little catchup in these domains. Additionaly, moving forward, an understanding of linear algebra and matrix calculus will be very helpful. When working in this space it never hurts to understand more of the math then needed.</p>
-<p>Speaking from experience, it may also be helpful to grab a paper and pen/pencil and write down the equations yourself. Solving things on your own is a surefire way to keep things in memory and it may also lead to the creation of your own personalized notes on the subject. Lastly, there is no need to memorize every piece of a derivation. It is there to help you understand and often you do not need to hold the derivatives in memory to fully understand a model’s use case and potential.</p>
-<div id="derivation-of-simple-linear-regression-least-squares-approach" class="section level4">
-<h4>Derivation of Simple Linear Regression: least squares approach</h4>
+<p>Speaking from experience, it may also be helpful to grab some paper and pen/pencil and write down the equations yourself. Solving things on your own is a surefire way to keep things in memory and it may also lead to the creation of your own personalized notes on the subject. Lastly, there is no need to memorize every piece of a derivation. It is there to help you understand and often you do not need to hold the derivatives in memory to fully understand a model’s use case and potential.</p>
+<div id="derivation-of-simple-linear-regression-least-squares-approach" class="section level3">
+<h3>Derivation of Simple Linear Regression: least squares approach</h3>
 <p>Let <span class="math inline">\((x_1, y_1), (x_2, y_2),...,(x_n, y_n)\)</span> represent <span class="math inline">\(n\)</span> observation pairs, each of which consists of a measurement of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. These value pairs are called the training data.</p>
 <p>Let <span class="math inline">\(\hat{y_i} = \hat{\beta_0} + \hat{\beta_1} x_i\)</span> be the prediction for <span class="math inline">\(Y\)</span> based on the <span class="math inline">\(i\)</span>th value of <span class="math inline">\(X\)</span>.</p>
 <p>Then <span class="math inline">\(e_i = y_i - \hat{y_i}\)</span> represents the <span class="math inline">\(i\)</span>th residual.</p>
 <p>We define the Sum of Squared Errors (SSE) also called the Residual Sum of Squares (RSS) as</p>
 <p><span class="math display">\[E(\beta_0, \beta_1) = RSS = e^2_1 + e^2_2 + ... + e^2_n = \sum^n_{i=1} (y_i - \hat{\beta_0} - \hat{\beta_1} x_i)^2\]</span> Our goal is to minimize the RSS, effectively minimizing the amount our model is incorrect. To do this we calculate the partial derivatives of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> and set them to zero.</p>
-<p>First, the partial derivative w.r.t. (with respect to) <span class="math inline">\(\beta_0\)</span>:</p>
+<div id="finding-the-partial-derivative-of-rss-with-respect-to-beta_0" class="section level4">
+<h4>Finding the partial derivative of <span class="math inline">\(RSS\)</span> with respect to <span class="math inline">\(\beta_0\)</span></h4>
+<p>The partial derivative w.r.t. (with respect to) <span class="math inline">\(\beta_0\)</span>:</p>
 <p><span class="math display">\[ \frac{\partial E}{\partial \beta_0}  = \frac{\partial}{\partial \beta_0} \Big[ \sum^n_{i=1} (\beta_0 + \beta_1 x_i - y_i)^2 \Big] = 0\]</span> Utilizing <a href="https://www.math.ucdavis.edu/~kouba/CalcOneDIRECTORY/chainruledirectory/ChainRule.html">chain rule</a>: <span class="math display">\[ \Leftrightarrow 2 \sum^n_{i=1}(\beta_0 + \beta_1 x_i - y_i) \frac{\partial}{\partial \beta_0} [\beta_0 + \beta_0 + \beta_1 x_i - y_i] = 0\]</span> <span class="math display">\[ \Leftrightarrow \sum^n_{i=1} (\beta_0 + \beta_1 x_i - y_i) (1 + 0 - 0) = \sum^n_{i=1} (\beta_0 + \beta_1 x_i - y_i) = 0\]</span> Utilizing <a href="http://tutorial.math.lamar.edu/Classes/CalcI/SummationNotation.aspx">Summation Properties</a>: <span class="math display">\[ \Leftrightarrow n \beta_0 + \beta_1 \sum^n_{i=1} x_i - \sum^n_{i=1} y_i = 0\]</span> <span class="math display">\[ \Leftrightarrow n \beta_0 + \beta_1 \sum^n_{i=1} x_i = \sum^n_{i=1} y_i\]</span></p>
-<p>Then, the partial derivative w.r.t <span class="math inline">\(\beta_1\)</span>:</p>
+</div>
+<div id="finding-the-partial-derivative-of-rss-with-respect-to-beta_1" class="section level4">
+<h4>Finding the partial derivative of <span class="math inline">\(RSS\)</span> with respect to <span class="math inline">\(\beta_1\)</span></h4>
+<p>The partial derivative w.r.t <span class="math inline">\(\beta_1\)</span>:</p>
 <p><span class="math display">\[ 
 \begin{aligned} 
 \frac{\partial E}{\partial \beta_1} &amp;= \frac{\partial}{\partial \beta_1} \Big[ \sum^n_{i=1} (\beta_0 + \beta_1 x_i - y_i)^2 \Big] = 0 \\
@@ -165,6 +170,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 &amp;= \bar{y} - \hat{\beta_1} \bar{x}
 \end{aligned}
 \]</span></p>
+</div>
 </div>
 </div>
 <div id="least-squares" class="section level2">
@@ -241,17 +247,88 @@ RSS &amp;= S_{yy} - 2 \hat{\beta_1} S_{xx} + \hat{\beta_1}^2 S_{xx}\\
 <p><span class="math display">\[
 s^2 = \frac{RSS}{n-2} = \sum^n_{i=1} \frac{(y_i - \hat{y_i})^2}{n-2} = \frac{S_{yy} - \hat{\beta_1} S_{xy}}{n-2}
 \]</span> is an unbiased estimator of <span class="math inline">\(\sigma^2\)</span>.</p>
-<p>SLIDE 27</p>
+<p>The parameter <span class="math inline">\(\sigma^2\)</span> measures the squared deviations between <span class="math inline">\(Y\)</span> values and their mean given by <span class="math inline">\(E(Y/x)\)</span>, i.e., squared deviations between <span class="math inline">\(Y\)</span> and <span class="math inline">\(\beta_0 + \beta_1 x\)</span> which is estimated by <span class="math inline">\(\hat{y} = \hat{\beta_0} + \hat{\beta_1} x\)</span>.</p>
+<p>Thus it would make sense that <span class="math inline">\(\sigma^2\)</span> is best depicted as a squared deviation of the typical observation <span class="math inline">\(y_i\)</span> from the estimated mean <span class="math inline">\(\hat{y_i}\)</span>.</p>
+<p>The quantity <span class="math inline">\(s^2\)</span> is called a mean-squared error (MSE).</p>
 </div>
 </div>
-<div id="statistics-of-linear-regression-using-least-squares" class="section level2">
-<h2>Statistics of Linear Regression using Least Squares</h2>
+<div id="inferences-about-the-regression-coefficients" class="section level2">
+<h2>Inferences about the Regression Coefficients</h2>
+<div id="statistics-of-linear-regression-using-least-squares" class="section level3">
+<h3>Statistics of Linear Regression using Least Squares</h3>
+<p>Under the normality assumption, we can prove that the random variable</p>
+<p><span class="math display">\[\frac{(n-2)S^2}{\sigma^2}\]</span> where <span class="math display">\[S^2 = \frac{RSS}{n-2}\]</span> is a chi-squared variable with <span class="math inline">\(n-2\)</span> degrees of freedom and it is independent of the random variable <span class="math inline">\(B_1\)</span>.</p>
+<p>It follows that the statistic</p>
+<p><span class="math display">\[T = \frac{(B_1 - \beta_1)/(\sigma / \sqrt{S_{xx}})}{S/ \sigma} = \frac{B_1 - \beta_1}{S / \sqrt{S_{xx}}}\]</span> has a <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n-2\)</span> degrees of freedom.</p>
+<p>The statistic <span class="math inline">\(T\)</span> can be used to construct a <span class="math inline">\(100(1 - \alpha) \%\)</span> confidence interval for the coefficient <span class="math inline">\(\beta_1\)</span>.</p>
+<p>A <span class="math inline">\(100(1- \alpha)\%\)</span> confidence interval for the parameter <span class="math inline">\(\beta_1\)</span> in the regression line</p>
+<p><span class="math display">\[E(Y/x) = \beta_0 + \beta_1 x\]</span> is given by <span class="math display">\[\hat{\beta_1} - t_{\alpha / 2} \frac{s}{\sqrt{S_{xx}}} &lt; \beta_1 &lt; \hat{\beta_1} + t_{\alpha / 2} \frac{s}{\sqrt{S_{xx}}}\]</span> where <span class="math inline">\(t_{\alpha / 2}\)</span> is a value of the <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(v=n-2\)</span> degrees of freedom leaving an area of <span class="math inline">\(\alpha / 2\)</span> to the right.</p>
+<p>Standard errors can also be used to perform hypothesis tests on the coefficients. The most common hypothesis test involves testing the null hypothesis of: <span class="math display">\[H_0: \text{There is no relationship between X and Y}\]</span> or <span class="math display">\[H_1: \text{There is some relationship between X and Y}\]</span></p>
+<p>Mathematically this corresponds to testing: <span class="math display">\[H_0: \beta_1 = 0\]</span> versus <span class="math display">\[H_1: \beta_1 \neq 0\]</span> since if <span class="math inline">\(\beta_1 = 0\)</span> then the model reduces to <span class="math inline">\(Y= \beta_0 + \epsilon\)</span> and <span class="math inline">\(X\)</span> is not associated with <span class="math inline">\(Y\)</span>.</p>
+<p>To test the null hypothesis, we compute a <span class="math inline">\(t\)</span>-statistic, given by <span class="math display">\[t=\frac{\hat{\beta_1} - 0}{SE(\hat{\beta_1})} = \frac{\hat{\beta_1} - 0}{s/\sqrt{S_{xx}}}\]</span> This has a distribution with <span class="math inline">\(n-2\)</span> degrees of freedom. Using software it is easy to compute the probability of observing any value equal to <span class="math inline">\(t\)</span> or larger. This value is called the <span class="math inline">\(p\)</span> value. Roughly speaking we can interpret the p value as follows:</p>
+<ul>
+<li>Small <span class="math inline">\(p\)</span>-value <span class="math inline">\(\Rightarrow\)</span> it is unlikely to observe such a substancial association betweeb the predictor and the response due to chance, in the absence of any real association between the predictor and the response.</li>
+</ul>
+<p>Confidence intervals and hypothesis testing on the coefficient <span class="math inline">\(\beta_0\)</span> may be established from the fact that <span class="math inline">\(B_0\)</span> is also normally distributed.</p>
+<p>It is not difficult to show that <span class="math display">\[T= \frac{B_0 - \beta_0}{S \sqrt{\sum^n_{i=1} x_i^2 /(nS_{xx})}}\]</span> has a <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n-2\)</span> degrees of freedom.</p>
+<p>We can now construct a <span class="math inline">\(100(1-\alpha)\%\)</span> confidence interval for the coefficient <span class="math inline">\(\beta_0\)</span>.</p>
 </div>
-<div id="quality-of-fit" class="section level2">
-<h2>Quality of Fit</h2>
+<div id="quality-of-fit" class="section level3">
+<h3>Quality of Fit</h3>
+<p>To assess the quality of fit, i.e., how well the simple linear regression model fits the data, we use the Coefficient of Determination, also known as <span class="math inline">\(R\)</span>-squared (<span class="math inline">\(R^2\)</span>).</p>
+<p>We can defined the coefficient of determination as the proportion of the variation in the target variable <span class="math inline">\(y\)</span> explained by the linear regression. It is interpreted as the proportion of the variance in the dependent variable that is predictable from the independent variable.</p>
+<p>Lets define the following quantities:</p>
+<ul>
+<li>Total Sum of Squares: <span class="math inline">\(TSS=\sum^n_{i=1} (y_i - \bar{y})^2\)</span></li>
+<li>Explained Sum of Squares: <span class="math inline">\(ESS = \sum^n_{i=1} (\hat{y_i} - \bar{y})^2\)</span></li>
+</ul>
+<p>So we see that <span class="math inline">\(TSS\)</span> is essentially a measure of the total variation in <span class="math inline">\(y\)</span> explained by both the regression model and the residual <span class="math inline">\(\epsilon\)</span>. Note that <span class="math inline">\(\bar{\hat{y}} = \bar{y}\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\bar{\hat{y}} &amp;= \frac{1}{n} \sum^n_{i=1} \hat{y_i} = \frac{1}{n} \sum^n_{i=1} \hat{\beta_0} + \hat{\beta_1} x_i\\
+&amp;= \hat{\beta_0} + \hat{\beta_1}\bar{x} = \bar{y}- \hat{\beta_1} \bar{x} + \hat{\beta_1} \bar{x}\\
+&amp;= \bar{y}
+\end{aligned}
+\]</span> It follows that <span class="math display">\[ESS = \sum^n_{i=1} (\hat{y_i} - \bar{y})^2 = \sum^n_{i=1} (\hat{y_i} - \bar{\hat{y}})^2\]</span> is the variation in the predicted data.</p>
+<p>In other words, it measures the variation explained by the fitted model.</p>
+<p>Now, we recall that <span class="math display">\[RSS = \sum^n_{i=1} (y_i - \hat{y_i})^2\]</span> which is the variation due to error, and usually called the unexplained variation.</p>
+<p>The following equality, stating that the total sum of squares equals the residual sum of squares plus the explained sum of squares, is generally true in simple linear regression:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\sum^n_{i=1} (y_i - \bar{y})^2 &amp;= \sum^n_{i=1} (y_i - \hat{y_i})^2 + \sum^n_{i=1} (\hat{y_i} - \bar{y})^2 \\
+TSS &amp;= RSS + ESS
+\end{aligned}
+\]</span></p>
+<p>The coefficient of determination <span class="math inline">\(R^2\)</span> is defined as <span class="math display">\[R^2 = \frac{ESS}{TSS} = 1 - \frac{RSS}{TSS}\]</span></p>
+<p><span class="math inline">\(0 \leq R^2 \leq 1\)</span> is the proportion of total variation in the target variable explained by the regression model.</p>
+<p>If $RSS = 0 $, all residuals are zero <span class="math inline">\(\Rightarrow\)</span> the fit is perfect. Hence, in this case all the variation is explained and <span class="math inline">\(R^2 = 1\)</span>.</p>
+<p>On the other hand, for a poor fitting model, <span class="math inline">\(RSS\)</span> is large (close to <span class="math inline">\(TSS\)</span>) and <span class="math inline">\(ESS\)</span> is small. And consequently, <span class="math inline">\(R^2\)</span> will be small (close to 0).</p>
+<p>The problem with the coefficient of determination <span class="math inline">\(R^2\)</span> is that in a given application we don’t necessarily know what acceptable values of <span class="math inline">\(R^2\)</span> we may use to assess the model.</p>
+<ul>
+<li><p>Adding additional terms to the model (e.g. an additional regressor) decreases <span class="math inline">\(RSS\)</span> and thus increases <span class="math inline">\(R^2\)</span>.</p></li>
+<li><p>This implies that <span class="math inline">\(R^2\)</span> can be made artificially high by an unwise practice of overfitting (i.e. the inclusion of too many model terms).</p></li>
+</ul>
+</div>
 </div>
 <div id="prediction" class="section level2">
 <h2>Prediction</h2>
+<p>One of the main objectives of building a linear regression model is to predict response values at one or more values of the independent variable.</p>
+<p>The equation <span class="math display">\[\hat{y} = \hat{\beta_0} + \hat{\beta_1} x\]</span> may be used to predict or estimate the mean response <span class="math inline">\(\mu_{Y|x_0}\)</span> at <span class="math inline">\(x=x_0\)</span>, where <span class="math inline">\(x_0\)</span> is not necessarily one of the pre-chosen values in a the training data. It may also be used to predict a single value <span class="math inline">\(y_0\)</span> of the variable <span class="math inline">\(Y_0\)</span>, when <span class="math inline">\(x=x_0\)</span>.</p>
+<p>Suppose that the experimenter wishes to construct a confidence interval for <span class="math inline">\(\mu_{Y|x_0}\)</span>. We may use the estimator <span class="math inline">\(\hat{Y_0} = B_0 + B_1 x_0\)</span> to estimate <span class="math display">\[\mu_{Y| x_0} = \beta_0 + \beta_1 x_0\]</span> It can be shown that the sampling distribution of <span class="math inline">\(\hat{Y_0}\)</span> is normal with mean <span class="math display">\[E(\hat{Y_0}) = \mu_{Y|x_0}\]</span> Hence, it is an unbiased estimator of <span class="math inline">\(\mu_{Y|x_0}\)</span>.</p>
+<p>The variance of <span class="math inline">\(\hat{Y_0}\)</span> is given by <span class="math display">\[
+\begin{aligned}
+\sigma^2_{\hat{Y_0}} &amp;= \sigma_{B_0 + B_1 x_0}^2 = \sigma^2_{\bar{Y} + B_1 (x_0 - \bar{x})} \\
+&amp;= \sigma^2 \Big [ \frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{xx}}  \Big]
+\end{aligned}
+\]</span> Note that in order to prove the above equation one needs to prove that <span class="math display">\[Cov(\bar{Y}, B_1) = 0\]</span></p>
+<p>Thus, a <span class="math inline">\(100(1-\alpha)\%\)</span> confidence on the mean response <span class="math inline">\(\mu_{Y|x_0}\)</span> can now be constructed from the statistic <span class="math display">\[T = \frac{\hat{Y_0} - \mu_{Y|x_0}}{S \sqrt{[\frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{xx}}]}}\]</span> which has a <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n-2\)</span> degrees of freedom.</p>
+<p>To obtain a predicition interval for a single value <span class="math inline">\(y_0\)</span> of the variable <span class="math inline">\(Y_0\)</span> when <span class="math inline">\(x = x_0\)</span>, it is better to consider the difference <span class="math inline">\(\hat{y_0} - y_0\)</span>. The quantity <span class="math inline">\(\hat{y_0} - y_0\)</span> is a value taken by the random variable <span class="math inline">\(\hat{Y_0} - Y_0\)</span>, whose sampling distribution can be shown to be normal with mean <span class="math display">\[E(\hat{Y_0} - Y_0)=0\]</span> and variance <span class="math display">\[
+\begin{aligned}
+\sigma^2_{\hat{Y_0}} &amp;= \sigma_{B_0 + B_1 x_0}^2 = \sigma^2_{\bar{Y} + B_1 (x_0 - \bar{x}) - \epsilon_0} \\
+&amp;= \sigma^2 \Big [ \frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{xx}}  \Big]
+\end{aligned}
+\]</span></p>
+<p>Thus a <span class="math inline">\(100(1-\alpha)\%\)</span> confidence interval for a single predicted value <span class="math inline">\(y_0\)</span> can be constructed from the statistic <span class="math display">\[T = \frac{\hat{Y_0} - Y_0}{S \sqrt{[1 + \frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{xx}}]}}\]</span> which has a <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n-2\)</span> degrees of freedom.</p>
 </div>
 <div id="examples" class="section level2">
 <h2>Examples</h2>

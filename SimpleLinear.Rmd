@@ -19,7 +19,7 @@ Linear Regression is a very simple approach for performing supervised learning. 
 Although it may seem overly simplistic, linear regression is extremely useful both conceptually and practically.
 
 * It is still a widely used statistical learning model
-* It servers as a great starting point for newer approaches: many fancy statistical learning approaches can be seen as generalizations or extensions of linear regression
+* It serves as a great starting point for newer approaches: many fancy statistical learning approaches can be seen as generalizations or extensions of linear regression
 
 ## Intuition behind using models
 
@@ -73,7 +73,7 @@ It is important to remark that:
 
 As a result, these problems are probabilitisc in nature since the relationship is not exact. The concept of regression analysis deals with finding the best relationship between $Y$ and $X$.
 
-Because of this we assume a model where we include an error term $\epsilon$:
+Because of this we assume a model where we include an error term:
 
 $$Y = \beta_0 + \beta_1 X + \epsilon$$ where $\epsilon$ is the error term
 
@@ -91,9 +91,9 @@ If you have never derived any statistical or learning model before, simple linea
 
 Before diving in, just know that it is assumed that you have some familiarity with summation notation, basic calculus, and some sense of statistics. If this is not the case I would still recommend diving in as there is a good chance things will clear up as you read forward and if that is not the case your eyes will have picked up a few things that will trigger a response when you do go to do a little catchup in these domains. Additionaly, moving forward, an understanding of linear algebra and matrix calculus will be very helpful. When working in this space it never hurts to understand more of the math then needed.
 
-Speaking from experience, it may also be helpful to grab a paper and pen/pencil and write down the equations yourself. Solving things on your own is a surefire way to keep things in memory and it may also lead to the creation of your own personalized notes on the subject. Lastly, there is no need to memorize every piece of a derivation. It is there to help you understand and often you do not need to hold the derivatives in memory to fully understand a model's use case and potential.
+Speaking from experience, it may also be helpful to grab some paper and pen/pencil and write down the equations yourself. Solving things on your own is a surefire way to keep things in memory and it may also lead to the creation of your own personalized notes on the subject. Lastly, there is no need to memorize every piece of a derivation. It is there to help you understand and often you do not need to hold the derivatives in memory to fully understand a model's use case and potential.
 
-#### Derivation of Simple Linear Regression: least squares approach
+### Derivation of Simple Linear Regression: least squares approach
 
 Let $(x_1, y_1), (x_2, y_2),...,(x_n, y_n)$ represent $n$ observation pairs, each of which consists of a measurement of $X$ and $Y$. These value pairs are called the training data. 
 
@@ -106,7 +106,9 @@ We define the Sum of Squared Errors (SSE) also called the Residual Sum of Square
 $$E(\beta_0, \beta_1) = RSS = e^2_1 + e^2_2 + ... + e^2_n = \sum^n_{i=1} (y_i - \hat{\beta_0} - \hat{\beta_1} x_i)^2$$
 Our goal is to minimize the RSS, effectively minimizing the amount our model is incorrect. To do this we calculate the partial derivatives of $\beta_0$ and $\beta_1$ and set them to zero.
 
-First, the partial derivative w.r.t. (with respect to) $\beta_0$:
+#### Finding the partial derivative of $RSS$ with respect to $\beta_0$
+
+The partial derivative w.r.t. (with respect to) $\beta_0$:
 
 $$ \frac{\partial E}{\partial \beta_0}  = \frac{\partial}{\partial \beta_0} \Big[ \sum^n_{i=1} (\beta_0 + \beta_1 x_i - y_i)^2 \Big] = 0$$
 Utilizing [chain rule](https://www.math.ucdavis.edu/~kouba/CalcOneDIRECTORY/chainruledirectory/ChainRule.html): 
@@ -116,7 +118,9 @@ Utilizing [Summation Properties](http://tutorial.math.lamar.edu/Classes/CalcI/Su
 $$ \Leftrightarrow n \beta_0 + \beta_1 \sum^n_{i=1} x_i - \sum^n_{i=1} y_i = 0$$
 $$ \Leftrightarrow n \beta_0 + \beta_1 \sum^n_{i=1} x_i = \sum^n_{i=1} y_i$$
 
-Then, the partial derivative w.r.t $\beta_1$:
+#### Finding the partial derivative of $RSS$ with respect to $\beta_1$
+
+The partial derivative w.r.t $\beta_1$:
 
 $$ 
 \begin{aligned} 
@@ -126,7 +130,9 @@ $$
 &\Leftrightarrow \beta_0 \sum^n_{i=1} x_i + \beta_1 \sum^n_{i=1} x_i^2 - \sum^n_{i=1} x_i y_i = 0 \\ &\Leftrightarrow \beta_0 \sum^n_{i=1} x_i + \beta_1 \sum^n_{i=1} x_i^2 = \sum^n_{i=1} x_i y_i \end{aligned}
  $$
 
-Now that we have found both partial derivatives, we can use them to solve for $\beta_0$ and $\beta_1$:
+#### Finding $\beta_0$ and $\beta_1$ by minimizing $RSS$
+
+Now that we have found both partial derivatives, we can use them to solve for $\beta_0$ and $\beta_1$ by setting both partial derivatives equal to 0:
 
 $$
 \begin{aligned}
@@ -303,7 +309,7 @@ To test the null hypothesis, we compute a $t$-statistic, given by
 $$t=\frac{\hat{\beta_1} - 0}{SE(\hat{\beta_1})} = \frac{\hat{\beta_1} - 0}{s/\sqrt{S_{xx}}}$$
 This has a distribution with $n-2$ degrees of freedom. Using software it is easy to compute the probability of observing any value equal to $t$ or larger. This value is called the $p$ value. Roughly speaking we can interpret the p value as follows:
 
-* Small $p$-value $\Bigrightarrow$ it is unlikely to observe such a substancial association betweeb the predictor and the response due to chance, in the absence of any real association between the predictor and the response. 
+* Small $p$-value $\Rightarrow$ it is unlikely to observe such a substancial association betweeb the predictor and the response due to chance, in the absence of any real association between the predictor and the response. 
 
 Confidence intervals and hypothesis testing on the coefficient $\beta_0$ may be established from the fact that $B_0$ is also normally distributed.
 
@@ -355,8 +361,60 @@ $$
 The coefficient of determination $R^2$ is defined as 
 $$R^2 = \frac{ESS}{TSS} = 1 - \frac{RSS}{TSS}$$
 
-SLIDE 38
-### Prediction
+$0 \leq R^2 \leq 1$ is the proportion of total variation in the target variable explained by the regression model. 
+
+If $RSS = 0 \Rightarrow $, all residuals are zero $\Rightarrow$ the fit is perfect. Hence, in this case all the variation is explained and $R^2 = 1$. 
+
+On the other hand, for a poor fitting model, $RSS$ is large (close to $TSS$) and $ESS$ is small. And consequently, $R^2$ will be small (close to 0).
+
+The problem with the coefficient of determination $R^2$ is that in a given application we don't necessarily know what acceptable values of $R^2$ we may use to assess the model.
+
+* Adding additional terms to the model (e.g. an additional regressor) decreases $RSS$ and thus increases $R^2$.
+
+* This implies that $R^2$ can be made artificially high by an unwise practice of overfitting (i.e. the inclusion of too many model terms).
+
+## Prediction
+
+One of the main objectives of building a linear regression model is to predict response values at one or more values of the independent variable. 
+
+The equation 
+$$\hat{y} = \hat{\beta_0} + \hat{\beta_1} x$$
+may be used to predict or estimate the mean response $\mu_{Y|x_0}$ at $x=x_0$, where $x_0$ is not necessarily one of the pre-chosen values in a the training data. It may also be used to predict a single value $y_0$ of the variable $Y_0$, when $x=x_0$.
+
+Suppose that the experimenter wishes to construct a confidence interval for $\mu_{Y|x_0}$. We may use the estimator $\hat{Y_0} = B_0 + B_1 x_0$ to estimate
+$$\mu_{Y| x_0} = \beta_0 + \beta_1 x_0$$
+It can be shown that the sampling distribution of $\hat{Y_0}$ is normal with mean
+$$E(\hat{Y_0}) = \mu_{Y|x_0}$$
+Hence, it is an unbiased estimator of $\mu_{Y|x_0}$.
+
+The variance of $\hat{Y_0}$ is given by
+$$
+\begin{aligned}
+\sigma^2_{\hat{Y_0}} &= \sigma_{B_0 + B_1 x_0}^2 = \sigma^2_{\bar{Y} + B_1 (x_0 - \bar{x})} \\
+&= \sigma^2 \Big [ \frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{xx}}  \Big]
+\end{aligned}
+$$
+Note that in order to prove the above equation one needs to prove that 
+$$Cov(\bar{Y}, B_1) = 0$$
+
+Thus, a $100(1-\alpha)\%$ confidence on the mean response $\mu_{Y|x_0}$ can now be constructed from the statistic
+$$T = \frac{\hat{Y_0} - \mu_{Y|x_0}}{S \sqrt{[\frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{xx}}]}}$$
+which has a $t$-distribution with $n-2$ degrees of freedom.
+
+To obtain a predicition interval for a single value $y_0$ of the variable $Y_0$ when $x = x_0$, it is better to consider the difference $\hat{y_0} - y_0$. The quantity $\hat{y_0} - y_0$ is a value taken by the random variable $\hat{Y_0} - Y_0$, whose sampling distribution can be shown to be normal with mean 
+$$E(\hat{Y_0} - Y_0)=0$$
+and variance
+$$
+\begin{aligned}
+\sigma^2_{\hat{Y_0}} &= \sigma_{B_0 + B_1 x_0}^2 = \sigma^2_{\bar{Y} + B_1 (x_0 - \bar{x}) - \epsilon_0} \\
+&= \sigma^2 \Big [ \frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{xx}}  \Big]
+\end{aligned}
+$$
+
+Thus a $100(1-\alpha)\%$ confidence interval for a single predicted value $y_0$ can be constructed from the statistic
+$$T = \frac{\hat{Y_0} - Y_0}{S \sqrt{[1 + \frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{xx}}]}}$$
+which has a $t$-distribution with $n-2$ degrees of freedom.
+
 
 ## Examples
 
