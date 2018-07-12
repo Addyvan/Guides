@@ -149,7 +149,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 &amp;\Leftrightarrow \sum^n_{i=1}(\beta_0 + \beta_1 x_i - y_i)x_i = 0 \\
 &amp;\Leftrightarrow \beta_0 \sum^n_{i=1} x_i + \beta_1 \sum^n_{i=1} x_i^2 - \sum^n_{i=1} x_i y_i = 0 \\ &amp;\Leftrightarrow \beta_0 \sum^n_{i=1} x_i + \beta_1 \sum^n_{i=1} x_i^2 = \sum^n_{i=1} x_i y_i \end{aligned}
  \]</span></p>
-<p>Now that we have found both partial derivatives, we can use them to solve for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>:</p>
+</div>
+<div id="finding-beta_0-and-beta_1-by-minimizing-rss" class="section level4">
+<h4>Finding <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> by minimizing <span class="math inline">\(RSS\)</span></h4>
+<p>Now that we have found both partial derivatives, we can use them to solve for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> by setting both partial derivatives equal to 0:</p>
 <p><span class="math display">\[
 \begin{aligned}
 \frac{\partial E}{\partial \beta_0} &amp;= n \beta_0 + \beta_1 \sum^n_{i=1} x_i - \sum^n_{i=1} y_i = 0\\
@@ -180,13 +183,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h4>Why least squares?</h4>
 <p>The least squares method is designed to minimize the sum of the squares of the residuals and to provide a fitted line that results in a closeness between the line and the plotted points.</p>
 <p>There are many ways of measuring closeness. For example, one may wish to determine <span class="math inline">\(\hat{\beta_0}\)</span> and <span class="math inline">\(\hat{\beta_1}\)</span> using another formula of the combined residuals such as:</p>
-<p><span class="math display">\[\sum^n_{i=1} |y_i - \hat{y_i}|\]</span> or <span class="math display">\[\sum^n_{i=1} |y_i - \hat{y_i}|^{\frac{3}{2}}\]</span></p>
+<p><span class="math display">\[\sum^n_{i=1} |y_i - \hat{y_i}|\]</span> or</p>
+<p><span class="math display">\[\sum^n_{i=1} |y_i - \hat{y_i}|^{\frac{3}{2}}\]</span></p>
 <p>However, the least squares method has the advantage to produce a differentiable formula and fit with the known formula of the variance of a random variable.</p>
 </div>
-<div id="properties-of-least-squares-estimators" class="section level4">
-<h4>Properties of least squares estimators</h4>
+</div>
+<div id="properties-of-least-squares-estimators" class="section level2">
+<h2>Properties of least squares estimators</h2>
+<p>While what we have done above is enough to start predicting values and creating trend lines, it is important to look at the properties of the model and its estimators. This is where a good understanding of fundamental statistical concepts will be very useful. If you are not familiar with terms such as random variables, normal distribution, <span class="math inline">\(t\)</span>-distribution, chi-sq disitribution, or variance/indepence, it may be best to do a little reading before hand or along the way.</p>
+<p>Below are a few select assumptions and properties of the least squares simple linear regression model:</p>
 <ul>
-<li>In the equation <span class="math inline">\(Y= \beta_0 + \beta_1 X + \epsilon\)</span>, the error term <span class="math inline">\(\epsilon\)</span> is assumed to be a normal random variable with <span class="math inline">\(E(\epsilon) = 0\)</span> and <span class="math inline">\(Var(\epsilon) = \sigma^2\)</span>.</li>
+<li>In the equation <span class="math inline">\(Y= \beta_0 + \beta_1 X + \epsilon\)</span>, the error term <span class="math inline">\(\epsilon\)</span> is assumed to be a normal random variable with <span class="math inline">\(E(\epsilon) = 0\)</span> (recall: <span class="math inline">\(E(\epsilon)\)</span> denotes “expected value of <span class="math inline">\(\epsilon\)</span>”) and <span class="math inline">\(Var(\epsilon) = \sigma^2\)</span>.</li>
 <li>Thus, <span class="math inline">\(Y\)</span> is also a normal random variable. In general <span class="math inline">\(X\)</span> is not random and can be measured with negligible error.</li>
 <li>The fact that <span class="math inline">\(E(\epsilon) = 0\)</span> implies that at a specific <span class="math inline">\(X\)</span>, the <span class="math inline">\(Y\)</span> values are distributed around the true or population regression line <span class="math inline">\(Y= \beta_0 + \beta_1 X\)</span></li>
 </ul>
@@ -201,11 +208,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li>The true regression line goes through the means of the response, and the actual observations are on the distribution around the means.</li>
 </ul>
+<div id="the-least-squares-estimators-for-beta_0-and-beta_1" class="section level4">
+<h4>The least squares estimators for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span></h4>
 <p>Suppose we make the assumption that <span class="math inline">\(\epsilon_1,...,\epsilon_n\)</span> are independent from run to run in the experiment. This provides a foundation for finding means and variances for the estimators <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>.</p>
 <p>We recall that <span class="math inline">\(\hat{\beta_0}\)</span> and <span class="math inline">\(\hat{\beta_1}\)</span> are only estimates of true parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> based on a given sample of <span class="math inline">\(n\)</span> observations. If the experiment is repeated over and over again, each time using the same fixed values of <span class="math inline">\(x\)</span>, the resulting estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> will most likely differ from experiment to experiment.</p>
 <p>Thus, the estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> may be viewed as values assumed by the random variables <span class="math inline">\(B_0\)</span> and <span class="math inline">\(B_1\)</span> which can be considered as estimators for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>. Thus, <span class="math inline">\(\hat{\beta_0}\)</span> and <span class="math inline">\(\hat{\beta_1}\)</span> are specific realizations of the estimators.</p>
 <p>Since the values of <span class="math inline">\(X\)</span> remain fixed, the values of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> depend on the variations in the values of <span class="math inline">\(Y\)</span> or, more precisely, on the values of the random variable <span class="math inline">\(Y_1, Y_2, ...,Y_n\)</span>. The distributional assumptions imply that <span class="math inline">\(Y_i, i=1,2,...,n\)</span> are also independently distributed, with mean <span class="math inline">\(E(Y_i) = E(Y|x_i) = \beta_0 + \beta_1 x_i\)</span> and equal variances <span class="math inline">\(\sigma^2\)</span>; that is:</p>
-<p><span class="math display">\[ \sigma_{Y|x_i}^2 = \sigma^2 \quad \text{  for  } \quad i=1,2,...,n\]</span> #### The least squares estimators for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span></p>
+<p><span class="math display">\[ \sigma_{Y|x_i}^2 = \sigma^2 \quad \text{  for  } \quad i=1,2,...,n\]</span></p>
 <p><span class="math display">\[
 \begin{aligned}
 B_1 &amp;= \frac{\sum^n_{i=1} (x_i - \bar{x})(Y_i - \bar{Y})}{\sum^n_{i=1} (x_i - \bar{x})^2} = \frac{\sum^n_{i=1} (x_i - \bar{x})Y_i}{\sum^n_{i=1} (x_i - \bar{x})^2} \\
@@ -214,17 +223,12 @@ B_1 &amp;= \frac{\sum^n_{i=1} (x_i - \bar{x})(Y_i - \bar{Y})}{\sum^n_{i=1} (x_i 
 \]</span> where <span class="math display">\[
 c_i = \frac{x_i - \bar{x}}{\sum^n_{i=1} (x_i - \bar{x})^2}, \quad i=1,...,n
 \]</span></p>
-<p>It follows that <span class="math inline">\(B_1\)</span> is a normal distribution with mean</p>
-<p><span class="math display">\[
+<p>It follows that <span class="math inline">\(B_1\)</span> is normally distribution with mean <span class="math display">\[
 \mu_{B_1} = \frac{\sum^n_{i=1} (x_i - \bar{x})(\beta_0 + \beta_1 x_i)}{\sum^n_{i=1} (x_i - \bar{x})^2} = \beta_1
-\]</span> hence, it is an unbiased estimator of <span class="math inline">\(\beta_1\)</span>. Its variance is</p>
-<p><span class="math display">\[
+\]</span> Thus, it is an unbiased estimator of <span class="math inline">\(\beta_1\)</span> and its variance is <span class="math display">\[
 \sigma^2_{B_1} = \frac{\sum^n_{i=1} (x_i - \bar{x})^2 \sigma^2_{Y_i}}{\Big [  \sum^n_{i=1} (x_i - \bar{x})^2  \Big ]^2 } = \frac{\sigma^2}{\sum^n_{i=1} (x_i - \bar{x})^2}
 \]</span></p>
-<p>The least squares estimator for <span class="math inline">\(\beta_0\)</span> is given by</p>
-<p><span class="math display">\[B_0 = \bar{Y} - \bar{x} B_1\]</span></p>
-<p>It follows that <span class="math inline">\(B_0\)</span> is also normally distributed with mean</p>
-<p><span class="math display">\[ \mu_{B_0} = E(\bar{Y}) - \bar{x} E(B_1) = \beta_0 \]</span> hence, it is an unbiased estimator of <span class="math inline">\(\beta_0\)</span>.</p>
+<p>The least squares estimator for <span class="math inline">\(\beta_0\)</span> is given by <span class="math display">\[B_0 = \bar{Y} - \bar{x} B_1\]</span> It follows that <span class="math inline">\(B_0\)</span> is also normally distributed with mean <span class="math display">\[ \mu_{B_0} = E(\bar{Y}) - \bar{x} E(B_1) = \beta_0 \]</span> Thus, it is an unbiased estimator of <span class="math inline">\(\beta_0\)</span>.</p>
 <p>Its variance is</p>
 <p><span class="math display">\[ \sigma^2_{B_0} = \frac{\sum^n_{i=1} x_i^2}{n \sum^n_{i=1} (x_i -\bar{x})^2} \sigma^2 \]</span></p>
 <p>To draw inferences on <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, it becomes necessary to arrive at an estimate of the parameter <span class="math inline">\(\sigma^2\)</span> appearing in the two preceding variance formulas for <span class="math inline">\(B_0\)</span> and <span class="math inline">\(B_1\)</span>.</p>
