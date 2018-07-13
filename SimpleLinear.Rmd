@@ -21,6 +21,8 @@ Although it may seem overly simplistic, linear regression is extremely useful bo
 * It is still a widely used statistical learning model
 * It serves as a great starting point for newer approaches: many fancy statistical learning approaches can be seen as generalizations or extensions of linear regression
 
+This document is going to dive deeper than is perhaps necesarry in order to provide a detailed understand of the topic and also prepare the reader for more difficult models. 
+
 ## Intuition behind using models
 
 Suppose that your role is to develope a marketing plan, on the basis of data, for next year that will result in high product sales.
@@ -66,6 +68,8 @@ abline(linear_model, col="tomato")
 
 ```
 
+Note: For the sake of focusing on the theory, we will assume that the response variables in the example are normally distributed. (Eventually this document will be refactored with better example data)
+
 It is important to remark that:
 
 * In most scientific / engineering phenomena, the relationship between $X$ and $Y$ is not necessarily linear
@@ -104,7 +108,17 @@ Then $e_i = y_i - \hat{y_i}$ represents the $i$th residual.
 We define the Sum of Squared Errors (SSE) also called the Residual Sum of Squares (RSS) as 
 
 $$E(\beta_0, \beta_1) = RSS = e^2_1 + e^2_2 + ... + e^2_n = \sum^n_{i=1} (y_i - \hat{\beta_0} - \hat{\beta_1} x_i)^2$$
-Our goal is to minimize the RSS, effectively minimizing the amount our model is incorrect. To do this we calculate the partial derivatives of $\beta_0$ and $\beta_1$ and set them to zero.
+where
+$$
+\begin{aligned}
+y_i &= \text{actual } y \text{ value in the i'th data pair} \\
+\hat{\beta_0} + \hat{\beta_1} x_i &= \text{model prediction of } y_i \\
+\epsilon_i &= y_i - \hat{\beta_0} + \hat{\beta_1} x_i \\
+\epsilon_i &= \text{the difference between the model prediction } y  \text{ and the actual } y
+\end{aligned}
+$$
+
+Our goal is to minimize the $RSS$, effectively minimizing the amount our model is incorrect (since $RSS$ is a function of all our $\epsilon_i$s). To do this we calculate the partial derivatives of the $RSS$ with respect to both $\beta_0$ and $\beta_1$ and set them to zero / solve.
 
 #### Finding the partial derivative of $RSS$ with respect to $\beta_0$
 
@@ -310,7 +324,7 @@ since if $\beta_1 = 0$ then the model reduces to $Y= \beta_0 + \epsilon$ and $X$
 
 To test the null hypothesis, we compute a $t$-statistic, given by
 $$t=\frac{\hat{\beta_1} - 0}{SE(\hat{\beta_1})} = \frac{\hat{\beta_1} - 0}{s/\sqrt{S_{xx}}}$$
-This has a distribution with $n-2$ degrees of freedom. Using software it is easy to compute the probability of observing any value equal to $t$ or larger. This value is called the $p$ value. Roughly speaking we can interpret the p value as follows:
+This has a distribution with $n-2$ degrees of freedom. Using software it is easy to compute the probability of observing any value equal to $t$ or larger (In your stats classes you will often use a table containing probability values coresponding to specific test-statistic values). This value is called the $p$ value. Roughly speaking we can interpret the $p$-value as follows:
 
 * Small $p$-value $\Rightarrow$ it is unlikely to observe such a substancial association betweeb the predictor and the response due to chance, in the absence of any real association between the predictor and the response. 
 
@@ -418,6 +432,90 @@ Thus a $100(1-\alpha)\%$ confidence interval for a single predicted value $y_0$ 
 $$T = \frac{\hat{Y_0} - Y_0}{S \sqrt{[1 + \frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{xx}}]}}$$
 which has a $t$-distribution with $n-2$ degrees of freedom.
 
+## Summary of the theory behind Simple Linear Regression
+
+Before reviewing all the elements covered, observe the example of SLR performed in R using the default library below:
+
+```{r}
+df <- read.csv("TBSOpenDataVisits.csv", header = TRUE)
+
+# Recall: Given a function name x, typing help(x) into the console (or in a script) will 
+# open an html file inside RStudio that provides you with useful info regarding that function.
+#
+# Example: help(lm)
+fit <- lm(downloads ~ visits, data=df) # lm stands for linear model
+print(fit)
+```
+
+In this case the $lm()$ function calculated:
+
+$$
+\begin{aligned}
+\hat{\beta_0} &= -6478.5542\\
+\hat{\beta_1} &= 0.3585 
+\end{aligned}
+$$
+Giving us the model:
+
+$$
+\begin{aligned}
+\hat{y} = \hat{\beta_0} + \hat{\beta_1} x 
+\end{aligned}
+$$
+where $\hat{y}$ is the predicted number of downloads for any $x$ number of visits to the TBS open data portal.
+
+At this point you might be wondering "this seems awfully simple, why is this document so long?" and for the most part you are correct to think this. There are many other much shorter ways to get to the idea of using a linear model to predict values and interpret data. Getting a working model is the easy part... Evaluating and being able to interpret every piece of a model is a much more complicated task. 95% of the content above was written to hopefully cover most of the major components involved in a complete analysis of a linear regression model. 
+
+The model provided by the $lm()$ function can be inputed into the $summary()$ function to give us more details about the coefficients and the quality of fit:
+
+```{r}
+summary(fit)
+```
+
+If we were to have simply covered how to calculate $\beta_0$ and $\beta_1$ you can see that much of the information about our model given by the summary equation would be quite confusing. Note that some of the information such as $R^2_{adj}$ is only relevant when performing Multiple Linear Regression and can be ignored for now as we only cover Simple Linear Regression.
+
+#### Major components of the output
+
+We covered several different aspects of linear regression so far. Now we can begin to put them all together to see how we can properly evaluate a simple linear model. 
+
+The major components are:
+
+* The coefficient values ($\beta_0$ and $\beta_1$)
+* The standard error and $t$-values of the coefficients
+* The $p$-values of the model
+* The Coefficient of Determination $R^2$ value of the model
+
+#### Coefficient values
+
+Perhaps the most important piece of the output, the coefficient values define the relationship between our dependent and independent variables. These values however, must be interpreted in tandem with the rest of the information outputed from our model in order to provide any significant insights. 
+
+#### Standard error and the $t$-values
+
+As we covered earlier, we can compute 
+
+$$t=\frac{\hat{\beta_1} - 0}{SE(\hat{\beta_1})} = \frac{\hat{\beta_1} - 0}{s/\sqrt{S_{xx}}}$$
+
+The $t$-value calculated allows for hypothesis testing at different levels of significance. If $|t|$ is sufficiently large, we reject the null hypothesis $H_0:\beta_1 = 0$ and accept the alternate $H_1:\beta_1 \neq 0$. This allows us to draw insights from individual relationships in our model. When moving onto Multiple Linear Regression, concepts like this one allow us to really understand the relationships between variables. Often times we can have a meaningful $R^2$ with many insignificant variables. It is vital, in situations like these, to be able to read the output of your models fluently.
+
+
+#### $p$-values
+
+The $p$-value or $Pr(>|t|)$ is the probability that you get a $t$-value as high or higher than then the observed value when $H_0$ : $\beta_i = 0$. Thus, if the $p$-value is high then it is likely that the relationship defined by the coefficient in question is significant. And if the $p$-value is high then we can say that the relationship defined by the coefficient in question is not statistically significant.
+
+#### $R^2$
+
+We covered the Coefficient of Determination $R^2$ when talkign about the Quality of Fit of a model. Recall that $R^2$ tells us the proportion of variation in the dependent variable that is explained by the model. 
+
+$$
+\begin{aligned}
+\sum^n_{i=1} (y_i - \bar{y})^2 &= \sum^n_{i=1} (y_i - \hat{y_i})^2 + \sum^n_{i=1} (\hat{y_i} - \bar{y})^2 \\
+TSS &= RSS + ESS \\
+\\
+R^2 &= \frac{ESS}{TSS} = 1 - \frac{RSS}{TSS}
+\end{aligned}
+$$
+
+While a model with a low $R^2$ does not explain variation in a dataset well, we don't necessarily discard the model based on solely this. Its a much better practice to look at the predicition accuracy of the model on a test-dataset, or validation set, before deciding on the efficacy of a model. 
 
 ## Examples
 

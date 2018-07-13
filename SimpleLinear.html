@@ -84,6 +84,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>It is still a widely used statistical learning model</li>
 <li>It serves as a great starting point for newer approaches: many fancy statistical learning approaches can be seen as generalizations or extensions of linear regression</li>
 </ul>
+<p>This document is going to dive deeper than is perhaps necesarry in order to provide a detailed understand of the topic and also prepare the reader for more difficult models.</p>
 </div>
 <div id="intuition-behind-using-models" class="section level2">
 <h2>Intuition behind using models</h2>
@@ -107,6 +108,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>In the above equation <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are two unknown constants that denote the intercept and slope of the linear model. They are generally referred to as model coefficients or model parameters. Our goal is to find these values.</p>
 <p>For example, <span class="math inline">\(X\)</span> may represent visits to the TBS Open Data Portal and <span class="math inline">\(Y\)</span> may represent the number of data downloads from the portal. Below is an example of linear regression used on real data disclosed by TBS on the open data portal:</p>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Note: For the sake of focusing on the theory, we will assume that the response variables in the example are normally distributed. (Eventually this document will be refactored with better example data)</p>
 <p>It is important to remark that:</p>
 <ul>
 <li>In most scientific / engineering phenomena, the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is not necessarily linear</li>
@@ -133,7 +135,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Let <span class="math inline">\(\hat{y_i} = \hat{\beta_0} + \hat{\beta_1} x_i\)</span> be the prediction for <span class="math inline">\(Y\)</span> based on the <span class="math inline">\(i\)</span>th value of <span class="math inline">\(X\)</span>.</p>
 <p>Then <span class="math inline">\(e_i = y_i - \hat{y_i}\)</span> represents the <span class="math inline">\(i\)</span>th residual.</p>
 <p>We define the Sum of Squared Errors (SSE) also called the Residual Sum of Squares (RSS) as</p>
-<p><span class="math display">\[E(\beta_0, \beta_1) = RSS = e^2_1 + e^2_2 + ... + e^2_n = \sum^n_{i=1} (y_i - \hat{\beta_0} - \hat{\beta_1} x_i)^2\]</span> Our goal is to minimize the RSS, effectively minimizing the amount our model is incorrect. To do this we calculate the partial derivatives of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> and set them to zero.</p>
+<p><span class="math display">\[E(\beta_0, \beta_1) = RSS = e^2_1 + e^2_2 + ... + e^2_n = \sum^n_{i=1} (y_i - \hat{\beta_0} - \hat{\beta_1} x_i)^2\]</span> where <span class="math display">\[
+\begin{aligned}
+y_i &amp;= \text{actual } y \text{ value in the i'th data pair} \\
+\hat{\beta_0} + \hat{\beta_1} x_i &amp;= \text{model prediction of } y_i \\
+\epsilon_i &amp;= y_i - \hat{\beta_0} + \hat{\beta_1} x_i \\
+\epsilon_i &amp;= \text{the difference between the model prediction } y  \text{ and the actual } y
+\end{aligned}
+\]</span></p>
+<p>Our goal is to minimize the <span class="math inline">\(RSS\)</span>, effectively minimizing the amount our model is incorrect (since <span class="math inline">\(RSS\)</span> is a function of all our <span class="math inline">\(\epsilon_i\)</span>s). To do this we calculate the partial derivatives of the <span class="math inline">\(RSS\)</span> with respect to both <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> and set them to zero / solve.</p>
 <div id="finding-the-partial-derivative-of-rss-with-respect-to-beta_0" class="section level4">
 <h4>Finding the partial derivative of <span class="math inline">\(RSS\)</span> with respect to <span class="math inline">\(\beta_0\)</span></h4>
 <p>The partial derivative w.r.t. (with respect to) <span class="math inline">\(\beta_0\)</span>:</p>
@@ -269,7 +279,7 @@ s^2 = \frac{RSS}{n-2} = \sum^n_{i=1} \frac{(y_i - \hat{y_i})^2}{n-2} = \frac{S_{
 <p><span class="math display">\[E(Y/x) = \beta_0 + \beta_1 x\]</span> is given by <span class="math display">\[\hat{\beta_1} - t_{\alpha / 2} \frac{s}{\sqrt{S_{xx}}} &lt; \beta_1 &lt; \hat{\beta_1} + t_{\alpha / 2} \frac{s}{\sqrt{S_{xx}}}\]</span> where <span class="math inline">\(t_{\alpha / 2}\)</span> is a value of the <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(v=n-2\)</span> degrees of freedom leaving an area of <span class="math inline">\(\alpha / 2\)</span> to the right.</p>
 <p>Standard errors can also be used to perform hypothesis tests on the coefficients. The most common hypothesis test involves testing the null hypothesis of: <span class="math display">\[H_0: \text{There is no relationship between X and Y}\]</span> or <span class="math display">\[H_1: \text{There is some relationship between X and Y}\]</span></p>
 <p>Mathematically this corresponds to testing: <span class="math display">\[H_0: \beta_1 = 0\]</span> versus <span class="math display">\[H_1: \beta_1 \neq 0\]</span> since if <span class="math inline">\(\beta_1 = 0\)</span> then the model reduces to <span class="math inline">\(Y= \beta_0 + \epsilon\)</span> and <span class="math inline">\(X\)</span> is not associated with <span class="math inline">\(Y\)</span>.</p>
-<p>To test the null hypothesis, we compute a <span class="math inline">\(t\)</span>-statistic, given by <span class="math display">\[t=\frac{\hat{\beta_1} - 0}{SE(\hat{\beta_1})} = \frac{\hat{\beta_1} - 0}{s/\sqrt{S_{xx}}}\]</span> This has a distribution with <span class="math inline">\(n-2\)</span> degrees of freedom. Using software it is easy to compute the probability of observing any value equal to <span class="math inline">\(t\)</span> or larger. This value is called the <span class="math inline">\(p\)</span> value. Roughly speaking we can interpret the p value as follows:</p>
+<p>To test the null hypothesis, we compute a <span class="math inline">\(t\)</span>-statistic, given by <span class="math display">\[t=\frac{\hat{\beta_1} - 0}{SE(\hat{\beta_1})} = \frac{\hat{\beta_1} - 0}{s/\sqrt{S_{xx}}}\]</span> This has a distribution with <span class="math inline">\(n-2\)</span> degrees of freedom. Using software it is easy to compute the probability of observing any value equal to <span class="math inline">\(t\)</span> or larger (In your stats classes you will often use a table containing probability values coresponding to specific test-statistic values). This value is called the <span class="math inline">\(p\)</span> value. Roughly speaking we can interpret the <span class="math inline">\(p\)</span>-value as follows:</p>
 <ul>
 <li>Small <span class="math inline">\(p\)</span>-value <span class="math inline">\(\Rightarrow\)</span> it is unlikely to observe such a substancial association betweeb the predictor and the response due to chance, in the absence of any real association between the predictor and the response.</li>
 </ul>
@@ -333,6 +343,97 @@ TSS &amp;= RSS + ESS
 \end{aligned}
 \]</span></p>
 <p>Thus a <span class="math inline">\(100(1-\alpha)\%\)</span> confidence interval for a single predicted value <span class="math inline">\(y_0\)</span> can be constructed from the statistic <span class="math display">\[T = \frac{\hat{Y_0} - Y_0}{S \sqrt{[1 + \frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{xx}}]}}\]</span> which has a <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n-2\)</span> degrees of freedom.</p>
+</div>
+<div id="summary-of-the-theory-behind-simple-linear-regression" class="section level2">
+<h2>Summary of the theory behind Simple Linear Regression</h2>
+<p>Before reviewing all the elements covered, observe the example of SLR performed in R using the default library below:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;TBSOpenDataVisits.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># Recall: Given a function name x, typing help(x) into the console (or in a script) will </span>
+<span class="co"># open an html file inside RStudio that provides you with useful info regarding that function.</span>
+<span class="co">#</span>
+<span class="co"># Example: help(lm)</span>
+fit &lt;-<span class="st"> </span><span class="kw">lm</span>(downloads <span class="op">~</span><span class="st"> </span>visits, <span class="dt">data=</span>df) <span class="co"># lm stands for linear model</span>
+<span class="kw">print</span>(fit)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = downloads ~ visits, data = df)
+## 
+## Coefficients:
+## (Intercept)       visits  
+##  -6478.5542       0.3585</code></pre>
+<p>In this case the <span class="math inline">\(lm()\)</span> function calculated:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{\beta_0} &amp;= -6478.5542\\
+\hat{\beta_1} &amp;= 0.3585 
+\end{aligned}
+\]</span> Giving us the model:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{y} = \hat{\beta_0} + \hat{\beta_1} x 
+\end{aligned}
+\]</span> where <span class="math inline">\(\hat{y}\)</span> is the predicted number of downloads for any <span class="math inline">\(x\)</span> number of visits to the TBS open data portal.</p>
+<p>At this point you might be wondering “this seems awfully simple, why is this document so long?” and for the most part you are correct to think this. There are many other much shorter ways to get to the idea of using a linear model to predict values and interpret data. Getting a working model is the easy part… Evaluating and being able to interpret every piece of a model is a much more complicated task. 95% of the content above was written to hopefully cover most of the major components involved in a complete analysis of a linear regression model.</p>
+<p>The model provided by the <span class="math inline">\(lm()\)</span> function can be inputed into the <span class="math inline">\(summary()\)</span> function to give us more details about the coefficients and the quality of fit:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(fit)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = downloads ~ visits, data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -19353.1  -3513.4   -921.4   5603.5  18585.3 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -6.479e+03  1.993e+03   -3.25  0.00195 ** 
+## visits       3.585e-01  3.022e-02   11.86  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 7887 on 56 degrees of freedom
+## Multiple R-squared:  0.7153, Adjusted R-squared:  0.7102 
+## F-statistic: 140.7 on 1 and 56 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>If we were to have simply covered how to calculate <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> you can see that much of the information about our model given by the summary equation would be quite confusing. Note that some of the information such as <span class="math inline">\(R^2_{adj}\)</span> is only relevant when performing Multiple Linear Regression and can be ignored for now as we only cover Simple Linear Regression.</p>
+<div id="major-components-of-the-output" class="section level4">
+<h4>Major components of the output</h4>
+<p>We covered several different aspects of linear regression so far. Now we can begin to put them all together to see how we can properly evaluate a simple linear model.</p>
+<p>The major components are:</p>
+<ul>
+<li>The coefficient values (<span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>)</li>
+<li>The standard error and <span class="math inline">\(t\)</span>-values of the coefficients</li>
+<li>The <span class="math inline">\(p\)</span>-values of the model</li>
+<li>The Coefficient of Determination <span class="math inline">\(R^2\)</span> value of the model</li>
+</ul>
+</div>
+<div id="coefficient-values" class="section level4">
+<h4>Coefficient values</h4>
+<p>Perhaps the most important piece of the output, the coefficient values define the relationship between our dependent and independent variables. These values however, must be interpreted in tandem with the rest of the information outputed from our model in order to provide any significant insights.</p>
+</div>
+<div id="standard-error-and-the-t-values" class="section level4">
+<h4>Standard error and the <span class="math inline">\(t\)</span>-values</h4>
+<p>As we covered earlier, we can compute</p>
+<p><span class="math display">\[t=\frac{\hat{\beta_1} - 0}{SE(\hat{\beta_1})} = \frac{\hat{\beta_1} - 0}{s/\sqrt{S_{xx}}}\]</span></p>
+<p>The <span class="math inline">\(t\)</span>-value calculated allows for hypothesis testing at different levels of significance. If <span class="math inline">\(|t|\)</span> is sufficiently large, we reject the null hypothesis <span class="math inline">\(H_0:\beta_1 = 0\)</span> and accept the alternate <span class="math inline">\(H_1:\beta_1 \neq 0\)</span>. This allows us to draw insights from individual relationships in our model. When moving onto Multiple Linear Regression, concepts like this one allow us to really understand the relationships between variables. Often times we can have a meaningful <span class="math inline">\(R^2\)</span> with many insignificant variables. It is vital, in situations like these, to be able to read the output of your models fluently.</p>
+</div>
+<div id="p-values" class="section level4">
+<h4><span class="math inline">\(p\)</span>-values</h4>
+<p>The <span class="math inline">\(p\)</span>-value or <span class="math inline">\(Pr(&gt;|t|)\)</span> is the probability that you get a <span class="math inline">\(t\)</span>-value as high or higher than then the observed value when <span class="math inline">\(H_0\)</span> : <span class="math inline">\(\beta_i = 0\)</span>. Thus, if the <span class="math inline">\(p\)</span>-value is high then it is likely that the relationship defined by the coefficient in question is significant. And if the <span class="math inline">\(p\)</span>-value is high then we can say that the relationship defined by the coefficient in question is not statistically significant.</p>
+</div>
+<div id="r2" class="section level4">
+<h4><span class="math inline">\(R^2\)</span></h4>
+<p>We covered the Coefficient of Determination <span class="math inline">\(R^2\)</span> when talkign about the Quality of Fit of a model. Recall that <span class="math inline">\(R^2\)</span> tells us the proportion of variation in the dependent variable that is explained by the model.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\sum^n_{i=1} (y_i - \bar{y})^2 &amp;= \sum^n_{i=1} (y_i - \hat{y_i})^2 + \sum^n_{i=1} (\hat{y_i} - \bar{y})^2 \\
+TSS &amp;= RSS + ESS \\
+\\
+R^2 &amp;= \frac{ESS}{TSS} = 1 - \frac{RSS}{TSS}
+\end{aligned}
+\]</span></p>
+<p>While a model with a low <span class="math inline">\(R^2\)</span> does not explain variation in a dataset well, we don’t necessarily discard the model based on solely this. Its a much better practice to look at the predicition accuracy of the model on a test-dataset, or validation set, before deciding on the efficacy of a model.</p>
+</div>
 </div>
 <div id="examples" class="section level2">
 <h2>Examples</h2>
