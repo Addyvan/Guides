@@ -12,14 +12,81 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Title
+# Multiple Linear Regression (MLR)
 
+In many applications, there is more than one variable that influences the response. Multiple Regression models describe how a single response variable $Y$ depends on a number of predictor variables.
 
+When this model is linear in the coefficients, it is called a **Multiple Linear Regression Model**. The MLR takes the form:
 
-```{r}
+$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X2 + ... + \beta_k X_k + \epsilon$$
 
-```
+If we set $X_0 = 1$ then we may use the compact formula:
 
+$$Y = \sum^k_{j=1} \beta_j X_j + \epsilon$$
+or the vector form:
+
+$$Y = X^T \beta + \epsilon$$
+
+Our goal is to seek estimators of the parameters $\beta_0, ..., \beta_k$ by fitting the Multiple Linear Regression model to the data.
+
+$$\{ (x_{1i}, x_{2i},...,x_{ki} ;y_i ); i=1,2,...,n \quad \text{and} \quad n>k \}$$
+where $y_i$ is the observed response to the values $x_{1i},x_{2i},...,x_{ki}$ of the $k$ independent variables $x_1,x_2,...,x_k$.
+
+In matrix form
+
+$$Y=\boldsymbol{X} \beta + \epsilon$$
+where
+
+$$
+Y=
+\begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    ...\\
+    y_n 
+\end{bmatrix}
+,
+X=
+\begin{bmatrix}
+    1 & x_{11}       & x_{12} & x_{31} & \dots & x_{k1} \\
+    1 & x_{12}       & x_{22} & x_{32} & \dots & x_{k2} \\
+    ... & ... & ... & ... & ... & ...\\
+    1 & x_{1n}       & x_{2n} & x_{3n} & \dots & x_{kn}
+\end{bmatrix}
+,
+\beta=
+\begin{bmatrix}
+    \beta_1 \\
+    \beta_2 \\
+    ...\\
+    \beta_n 
+\end{bmatrix}
+,
+\epsilon=
+\begin{bmatrix}
+    \epsilon_1 \\
+    \epsilon_2 \\
+    ...\\
+    \epsilon_n 
+\end{bmatrix}
+$$
+
+The Least Squares method for estimation of $\beta$ involves finding $\hat{\beta}$ for which
+
+$$RSS = E(\beta) = (\boldsymbol{X} \beta - y)^T (\boldsymbol{X} \beta - y)$$
+is minimized.
+
+We find the gradient of the $RSS$:
+
+$$
+\begin{aligned}
+\nabla E(\beta) &= \nabla ((\boldsymbol{X} \beta - y)^T (\boldsymbol{X} \beta - y)) \\
+\nabla E(\beta) &= \nabla (\beta^T \boldsymbol{X}^T \boldsymbol{X} \beta - y^T \boldsymbol{X} \beta - \beta^T \boldsymbol{X} ^T y + y^T y) \\
+\nabla E(\beta) &= 2 \boldsymbol{X}^T \boldsymbol{X} \beta - 2 \boldsymbol{X}^T y\\
+\end{aligned}
+$$
+
+Setting the gradient equal to zero we get:
 
 
 ```{r}
