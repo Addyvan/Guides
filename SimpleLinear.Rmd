@@ -1,7 +1,7 @@
 ---
 title: "Simple Linear Regression"
 author: "Addison van den Hoeven"
-date: "July 3, 2018"
+date: "July 17, 2018"
 output: 
   prettydoc::html_pretty:
   theme: cayman
@@ -47,7 +47,7 @@ Mathematically, we can write this linear relationship as:
 $$Y \approx \beta_0 + \beta_1 X$$
 where $\approx$ denotes "approximately modeled as".
 
-In the above equation $\beta_0$ and $\beta_1$ are two unknown constants that denote the intercept and slope of the linear model. They are generally referred to as model coefficients or model parameters. Our goal is to find these values.
+In the above equation, $\beta_0$ and $\beta_1$ are two unknown constants that denote the intercept and slope of the linear model. They are generally referred to as model coefficients or model parameters. Our goal is to find these values.
 
 For example, $X$ may represent visits to the TBS Open Data Portal and $Y$ may represent the number of data downloads from the portal. Below is an example of linear regression used on real data disclosed by TBS on the open data portal:
 
@@ -68,14 +68,14 @@ abline(linear_model, col="tomato")
 
 ```
 
-Note: For the sake of focusing on the theory, we will assume that the response variables in the example are normally distributed. (Eventually this document will be refactored with better example data)
+Note: For the sake of focusing on the regression derivation theory, we will assume that the response variables in the example are normally distributed. (Eventually this document will be refactored with better example data)
 
 It is important to remark that:
 
-* In most scientific / engineering phenomena, the relationship between $X$ and $Y$ is not necessarily linear
-* It is also not necessarily deterministic in the sense that a given value $X$ does not always give the same value for $Y$
+* In most scientific / engineering phenomena, the relationship between $X$ and $Y$ is not necessarily linear.
+* It is also not necessarily deterministic in the sense that a given value $X$ does not always give the same value for $Y$.
 
-As a result, these problems are probabilitisc in nature since the relationship is not exact. The concept of regression analysis deals with finding the best relationship between $Y$ and $X$.
+As a result, these problems are **probabilitisc** in nature since the relationship is not exact. The concept of regression analysis deals with finding the best relationship between $Y$ and $X$.
 
 Because of this we assume a model where we include an error term:
 
@@ -99,13 +99,13 @@ Speaking from experience, it may also be helpful to grab some paper and pen/penc
 
 ### Derivation of Simple Linear Regression: least squares approach
 
-Let $(x_1, y_1), (x_2, y_2),...,(x_n, y_n)$ represent $n$ observation pairs, each of which consists of a measurement of $X$ and $Y$. These value pairs are called the training data. 
+Let $(x_1, y_1), (x_2, y_2),...,(x_n, y_n)$ represent $n$ observation pairs, each of which consists of a measurement of $X$ and $Y$. These value pairs are called the **training data**. 
 
 Let $\hat{y_i} = \hat{\beta_0} + \hat{\beta_1} x_i$ be the prediction for $Y$ based on the $i$th value of $X$.
 
 Then $e_i = y_i - \hat{y_i}$ represents the $i$th residual.
 
-We define the Sum of Squared Errors (SSE) also called the Residual Sum of Squares (RSS) as 
+We define the **Sum of Squared Errors** (SSE) also called the **Residual Sum of Squares** (RSS) as 
 
 $$E(\beta_0, \beta_1) = RSS = e^2_1 + e^2_2 + ... + e^2_n = \sum^n_{i=1} (y_i - \hat{\beta_0} - \hat{\beta_1} x_i)^2$$
 where
@@ -144,7 +144,7 @@ $$
 &\Leftrightarrow \beta_0 \sum^n_{i=1} x_i + \beta_1 \sum^n_{i=1} x_i^2 - \sum^n_{i=1} x_i y_i = 0 \\ &\Leftrightarrow \beta_0 \sum^n_{i=1} x_i + \beta_1 \sum^n_{i=1} x_i^2 = \sum^n_{i=1} x_i y_i \end{aligned}
  $$
 
-#### Finding $\beta_0$ and $\beta_1$ by minimizing $RSS$
+#### Finding $\hat{\beta_0}$ and $\hat{\beta_1}$ by minimizing $RSS$
 
 Now that we have found both partial derivatives, we can use them to solve for $\beta_0$ and $\beta_1$ by setting both partial derivatives equal to 0:
 
@@ -160,8 +160,8 @@ The slope term is:
 $$
 \begin{aligned}
 \hat{\beta_1} &= \frac{n\sum^n_{i=1} x_i y_i - (\sum^n_{i=1} x_i)(\sum^n_{i=1} y_i)}{n \sum^n_{i=1} x_i^2 - (\sum^n_{i=1} x_i)^2} \\
-&= \frac{\sum^n_{i=1} (x_i - \bar{x})(y_i - \bar{y})}{\sum^n_{i=1} (x_i - \bar{x})^2} \\
-&= \frac{Cov(x,y)}{Var(x)}
+\hat{\beta_1}&= \frac{\sum^n_{i=1} (x_i - \bar{x})(y_i - \bar{y})}{\sum^n_{i=1} (x_i - \bar{x})^2} \\
+\hat{\beta_1}&= \frac{Cov(x,y)}{Var(x)}
 \end{aligned}
 $$
 Where $\bar{y} = \frac{1}{n}\sum^n_{i=1} y_i$ and $\bar{x} = \frac{1}{n}\sum^n_{i=1} x_i$ are the sample means.
@@ -177,11 +177,11 @@ $$
 
 ## Least Squares
 
-The above method of performing linear regression is referred to as Ordinary Least Squares Estimation (OLSE).
+The above method of performing linear regression is referred to as **Ordinary Least Squares Estimation** (OLSE).
 
 #### Why least squares?
 
-The least squares method is designed to minimize the sum of the squares of the residuals and to provide a fitted line that results in a closeness between the line and the plotted points.
+The Least Squares method is designed to minimize the sum of the squares of the residuals ($RSS$) and to provide a fitted line that results in a closeness between the line and the plotted points.
 
 There are many ways of measuring closeness. For example, one may wish to determine $\hat{\beta_0}$ and $\hat{\beta_1}$ using another formula of the combined residuals such as:
 
@@ -190,11 +190,11 @@ or
 
 $$\sum^n_{i=1} |y_i - \hat{y_i}|^{\frac{3}{2}}$$
 
-However, the least squares method has the advantage to produce a differentiable formula and fit with the known formula of the variance of a random variable.
+However, the Least Squares method has the advantage to produce a **differentiable formula** and fit with the known formula of the variance of a random variable. Many other models do not produce a differential formula and must be solved by numerical methods such as gradient ascent/descent (like in logistic regression).
 
 ## Properties of least squares estimators
 
-While what we have done above is enough to start predicting values and creating trend lines, it is important to look at the properties of the model and its estimators. This is where a good understanding of fundamental statistical concepts will be very useful. If you are not familiar with terms such as random variables, normal distribution, $t$-distribution, chi-sq disitribution, or variance/indepence, it may be best to do a little reading before hand or along the way.
+While what we have done above is enough to start predicting values and creating trend lines, it is important to look at the properties of the model and its estimators. This is where a good understanding of fundamental statistical concepts will be very useful. If you are not familiar with terms such as random variables, normal distribution, $t$-distribution, chi-sq disitribution, or variance/indepence, it may be best to do a little reading before hand or along the way. 
 
 Below are a few select assumptions and properties of the least squares simple linear regression model:
 
@@ -356,6 +356,7 @@ $$
 &= \bar{y}
 \end{aligned}
 $$
+
 It follows that
 $$ESS = \sum^n_{i=1} (\hat{y_i} - \bar{y})^2 = \sum^n_{i=1} (\hat{y_i} - \bar{\hat{y}})^2$$
 is the variation in the predicted data. 
@@ -519,7 +520,9 @@ While a model with a low $R^2$ does not explain variation in a dataset well, we 
 
 ## Examples
 
-#### No library done out in R
+### No library done out in R code
+
+First off, I will load up a csv file with data.
 
 ```{r}
 df <- read.csv("TBSOpenDataVisits.csv", header = TRUE)
@@ -532,21 +535,85 @@ plot(x = x_i,
      main = "TBS Download Data",
      col="blue")
 ```
-```{r}
-# find beta0
-```
+
+#### Finding the coefficient values
+
+Recall the formula for $\hat{\beta_1}$:
+
+$$
+\begin{aligned}
+\hat{\beta_1}&= \frac{\sum^n_{i=1} (x_i - \bar{x})(y_i - \bar{y})}{\sum^n_{i=1} (x_i - \bar{x})^2} \\
+\hat{\beta_1}&= \frac{Cov(x,y)}{Var(x)}
+\end{aligned}
+$$
 
 ```{r}
 # find beta1
+
+beta1 <- cov(x_i,y_i)/var(x_i)
+print(beta1)
 ```
-#### With R libraries
 
-#### With python libraries
+Recall the formula for $\hat{\beta_0}$:
 
-
-
-
+$$
+\hat{\beta_0} = \frac{\sum^n_{i=1} y_i - \hat{\beta_1} \sum^n_{i=1} x_i}{n}
+= \bar{y} - \hat{\beta_1} \bar{x}
+$$
 
 ```{r}
+# find beta0
 
+beta0 <- mean(y_i) - beta1 * mean(x_i)
+print(beta0)
 ```
+
+We can use these values to predict $y_i$ and find $\hat{y_i}$:
+
+```{r}
+# find y_i_predicted
+
+y_i_predicted <- c()
+i <- 1
+for (x in x_i) {
+  y_i_predicted[i] <- beta0 + beta1 * x
+  i <- i + 1
+}
+```
+
+#### Finding the properties of the coefficients and the model
+
+Recall the formula for $R^2$:
+
+$$
+\begin{aligned}
+R^2 &= \frac{ESS}{TSS} \\
+TSS &= \sum^n_{i=1} (y_i - \bar{y})^2\\
+ESS &= \sum^n_{i=1} (\hat{y_i} - \bar{y})^2
+\end{aligned}
+$$
+
+```{r}
+# find R^2
+
+# initializing variables for TSS and ESS
+TSS <- 0
+ESS <- 0
+y_bar <- mean(y_i)
+
+for (i in 1: length(y_i)) {
+  ESS <- ESS + (y_i_predicted[i] - y_bar)^2
+  TSS <- TSS + (y_i[i] - y_bar)^2
+}
+  
+R_squared <- ESS/TSS
+print(R_squared)
+```
+
+TO DO: FIND t-values and p-values in an interesting way! (perhaps show the distribution and where the t value lies.)
+
+
+
+
+
+
