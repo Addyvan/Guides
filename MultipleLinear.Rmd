@@ -10,6 +10,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 999)
 ```
 
 # Multiple Linear Regression (MLR)
@@ -56,10 +57,10 @@ X=
 ,
 \beta=
 \begin{bmatrix}
+    \beta_0 \\
     \beta_1 \\
-    \beta_2 \\
     ...\\
-    \beta_n 
+    \beta_k 
 \end{bmatrix}
 ,
 \epsilon=
@@ -74,21 +75,75 @@ $$
 The Least Squares method for estimation of $\beta$ involves finding $\hat{\beta}$ for which
 
 $$RSS = E(\beta) = (\boldsymbol{X} \beta - y)^T (\boldsymbol{X} \beta - y)$$
-is minimized.
+is minimized. Note that $(\boldsymbol{X} \beta - y)^T (\boldsymbol{X} \beta - y)$ is essentially the same as when we did $(y_i - \hat{y_i})^2$ in simple linear regression. 
 
 We find the gradient of the $RSS$:
 
 $$
 \begin{aligned}
-\nabla E(\beta) &= \nabla ((\boldsymbol{X} \beta - y)^T (\boldsymbol{X} \beta - y)) \\
-\nabla E(\beta) &= \nabla (\beta^T \boldsymbol{X}^T \boldsymbol{X} \beta - y^T \boldsymbol{X} \beta - \beta^T \boldsymbol{X} ^T y + y^T y) \\
-\nabla E(\beta) &= 2 \boldsymbol{X}^T \boldsymbol{X} \beta - 2 \boldsymbol{X}^T y\\
+\nabla_{\beta} RSS &= \nabla ((\boldsymbol{X} \beta - y)^T (\boldsymbol{X} \beta - y)) \\
+\nabla_{\beta} RSS &= \nabla (\beta^T \boldsymbol{X}^T \boldsymbol{X} \beta - y^T \boldsymbol{X} \beta - \beta^T \boldsymbol{X} ^T y + y^T y) \\
+\nabla_{\beta} RSS &= 2 \boldsymbol{X}^T \boldsymbol{X} \beta - 2 \boldsymbol{X}^T y\\
 \end{aligned}
 $$
 
 Setting the gradient equal to zero we get:
 
+$$
+\begin{aligned}
+2 \boldsymbol{X}^T \boldsymbol{X} \beta - 2\boldsymbol{X}^T y = 0 &\Leftrightarrow \boldsymbol{X}^T\boldsymbol{X}\beta = \boldsymbol{X}^T y \\
+& \Leftrightarrow \hat{\beta} = (\boldsymbol{X}^T \boldsymbol{X})^{-1} \boldsymbol{X}^T y
+\end{aligned}
+$$
+if $A=\boldsymbol{X}^T \boldsymbol{X}$ is invertible. Recall that a matrix A is invertible if there exists an $n$ by $n$ square matrix $B$ such that:
+$$AB = BA = I_n$$
+where $I_n$ denotes the $n$ x $n$ identity matrix. 
+
+
+## Examples using the "House Prices: Advanced Regression Techniques" dataset from kaggle.com
+
+Since the math is a little more complex than in simple linear regression, we will use the intuition learned from simple linear regression and get right into practical examples where we will look at theory along the way. 
+
+```{r}
+df <- read.csv("house_train.csv")
+
+names(df)
+
+```
+
+As you can see above we've got a lot of features. And if you were to look at the dataset many of the features take different forms. Some are quantitative in nature such as lot size, others are qualitative in nature like the type of foundation, and some are binary like whether or not there is central heating (we will call this a dummy variable). 
+
+```{r}
+plot(x = df$Id, 
+     y = df$SalePrice,
+     xlab = "Id",
+     ylab = "Sale Price",
+     main = "Sale Price of 1460 homes",
+     col="blue")
+```
+
+If we try and do a Simple Linear Regression model using only the Lot Area, we get the following. 
+
+```{r}
+plot(x = df$LotArea, 
+     y = df$SalePrice,
+     xlab = "LotArea",
+     ylab = "Sale Price",
+     main = "Sale Price of 1460 homes",
+     col="blue")
+
+linear_model <- lm(SalePrice ~ LotArea, data=df)
+
+abline(linear_model, col="tomato")
+```
+
+We can see a pretty weak relationship between the two. This makes a lot of sense since we are neglecting the other 70 or so pieces of information we have about each home.
 
 ```{r}
 
+
+#linear_model <- lm(SalePrice ~ , data=df)
+
 ```
+
+### Feature Manipulation
