@@ -1,0 +1,40 @@
+---
+title: "Principle Component Analysis"
+author: "Addison van den Hoeven"
+date: "March 12, 2019"
+output: 
+  prettydoc::html_pretty:
+  theme: cayman
+  highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 999)
+```
+
+
+## Overview
+
+As the dimensions of data increase, the difficulty to visualize it and perform computations on it also increases. Principle Component Analysis, or typically PCA for short, is a dimension reduction technique.
+
+According to wikipedia:
+
+PCA uses an orthogonal transformation to convert a set of observations of possibly correlated variables into a set of values of linearly uncorrelated variables called principle components. This transformation is defined in such a way that the first principle component has the largest possible variance (that is, accounts for as much of the variability in the data as possible), and each succeeding component in turn has the highest variance possible under the constraint that it is orthogonal to the preceding components.
+
+Basically, PCA allows us to try an reveil the internal structure of our high dimensional data by transforming it into low dimensional data which best explains the variance in our data. 
+
+### How does PCA work? 
+
+1. Calculate the covariance matrix X of data points
+2. Calculate eigen vectors and corresponding eigen values
+3. Sort the eigen vectors according to their eigen values in decreasing order
+4. Choose first k eigen vectors which now become the new k dimensions
+5. Transform the original n dimendional data points into k dimensions
+
+
+### Sources 
+
+- https://en.wikipedia.org/wiki/Principal_component_analysis
+- https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c
+- https://medium.com/@aptrishu/understanding-principle-component-analysis-e32be0253ef0

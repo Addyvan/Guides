@@ -1,7 +1,7 @@
 ---
-title: "Usefull Stats"
+title: "Singular Value Decomposition"
 author: "Addison van den Hoeven"
-date: "July 3, 2018"
+date: "March 13, 2019"
 output: 
   prettydoc::html_pretty:
   theme: cayman
@@ -10,18 +10,8 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 999)
 ```
 
-## Title
+## Overview
 
-
-
-```{r}
-
-```
-
-
-
-```{r}
-
-```

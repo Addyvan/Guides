@@ -15,44 +15,46 @@ These guides begin with the assumption that one has a firm handle on:
 
 #### General theory
 
+Linear Algebra:
+- [] Principle Component Analysis (PCA) 1
+- [] Singular Value Decomposition (SVD) 2
+- [] t-SNE
+
 Statistics:
 - [X] The Normal (Gaussian) Distribution
 - [X] Simple Linear Regression
-- [X] Multiple Linear Regression 
-- [] Logistic Regression (Softmax)
-- [] Bayesian Classification
+- [X] Multiple Linear Regression
+- [] Logistic Regression (Softmax) 18
+- [] Bayesian Classification 13
 
 Machine Learning:
-- [] Bias/Variance Tradeoff
-- [] Cross-validation (+ k-fold cross validation)
-- [] Loss Functions and Optimization
-- [] Gradient Descent
-- [] Stochastic Gradient Descent
-- [] Backpropagation
-- [] Naive Bayes
-- [] K-Neirest-Neighbours
-- [] Support Vector Machines (SVM)
-- [] Neural Networks
+- [] Bias/Variance Tradeoff 16
+- [] Cross-validation (+ k-fold cross validation) 17
+- [] Loss Functions and Optimization 11
+- [] Gradient Descent 9
+- [] Stochastic Gradient Descent 10
+- [] Backpropagation 8
+- [] Naive Bayes 14
+- [] K-Neirest-Neighbours 12
+- [] Support Vector Machines (SVM) 15
 - [] Hierarchical Softmax
+- [] Neural Networks
+
 
 Deep Learning:
 - [] To be determined (probably sections of RNN, CNN etc...)
 
-Linear Algebra:
-- [] Singular Value Decomposition (SVD)
-- [] Principle Component Analysis (PCA)
-
 #### Specific applications
 
 Natural Language Processing:
-- [] Bag-of-Words Model
-- [] Word2Vec - SkipGram Model
-- [] GloVe: Global Vectors for Word Representation
+- [] Bag-of-Words Model 3
+- [] Word2Vec - SkipGram Model 4
+- [] GloVe: Global Vectors for Word Representation 5
 
 Recommender Systems:
-- [] Collaborative Filtering Basics
+- [] Collaborative Filtering Basics 6
 - [] Collaborative Filtering Techniques and Optimizations
-- [] Content Based Filtering Basics
+- [] Content Based Filtering Basics 7
 - [] Content Based Filtering Techniques and Optimizations
 
 Reinforcement Learning:
